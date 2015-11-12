@@ -4,4 +4,9 @@
     <string name="hello_world">Hello world!</string>
     <string name="action_settings">Settings</string>
     <string name="send">Send</string>
+    <string name="service_label">App</string>
+    <string name="me_label">Me</string>
+    <string name="message_placeholder">text message</string>
+    <string name="send_btn">send</string>
+    <string name="title_activity_conversation_list">ConversationListActivity</string>
 </resources>

@@ -18,8 +18,8 @@ public class QueryServerAsyncTask extends AsyncTask<String, Void, JSONObject> {
     private QueryCompletionListener mQueryCompletionListener;
 
     public interface QueryCompletionListener {
-        public void dataFound(JSONObject data);
-        public void dataNotFound();
+        public void responseReceived(JSONObject data);
+        public void noResponseReceived();
     }
 
     public QueryServerAsyncTask(QueryCompletionListener completionListener) {
@@ -49,9 +49,9 @@ public class QueryServerAsyncTask extends AsyncTask<String, Void, JSONObject> {
     @Override
     protected void onPostExecute(JSONObject data) {
         if (data != null)
-            mQueryCompletionListener.dataFound(data);
+            mQueryCompletionListener.responseReceived(data);
         else
-            mQueryCompletionListener.dataNotFound();
+            mQueryCompletionListener.noResponseReceived();
     }
 
     private static JSONObject parseToJsonObject(HttpsURLConnection con) throws IOException, JSONException {
