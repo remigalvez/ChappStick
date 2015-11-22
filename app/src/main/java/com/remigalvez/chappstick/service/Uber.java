@@ -9,7 +9,8 @@ import com.remigalvez.chappstick.activity.MessagingActivity;
  */
 public class Uber extends MessagingActivity {
 
-    public void Uber() {
+    public Uber() {
+        super("uber");
     }
 
     @Override
@@ -18,10 +19,6 @@ public class Uber extends MessagingActivity {
         // Notify server of log on
         // Return app name and welcome message
         // *** Temporarily hard coded *** //
-        this.mAppName = "Uber";
-        this.mWelcomeMessage = "Hi Remi, welcome to Uber!";
-        setTitle(mAppName);
-        this.sendWelcomeMessage(mWelcomeMessage);
     }
 
 }

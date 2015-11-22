@@ -9,7 +9,7 @@
                 tools:context="com.remigalvez.chappstick.activity.HomescreenActivity">
 
     <ListView
-        android:id="@+id/conversation_list_view"
+        android:id="@+id/appListView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:listSelector="#e3fdff"

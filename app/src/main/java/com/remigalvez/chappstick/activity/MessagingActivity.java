@@ -1,5 +1,6 @@
 package com.remigalvez.chappstick.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -14,10 +15,11 @@ import android.widget.RelativeLayout;
 
 import com.remigalvez.chappstick.R;
 import com.remigalvez.chappstick.Utils;
+import com.remigalvez.chappstick.adapter.ChatAdapter;
 import com.remigalvez.chappstick.asynctask.QueryServerAsyncTask.QueryCompletionListener;
-import com.remigalvez.chappstick.objects.ChatAdapter;
 import com.remigalvez.chappstick.objects.ChatMessage;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
@@ -27,12 +29,12 @@ import java.util.Date;
 public abstract class MessagingActivity extends AppCompatActivity implements QueryCompletionListener {
     private static final String TAG = "MessagingActivity";
 
+    protected String mAppHandle;
+
     QueryCompletionListener mResponseListener = this;
 
     protected String mAppName;
     protected String mWelcomeMessage;
-
-    protected int messageCount = 0;
 
     private EditText messageET;
     private ListView messagesContainer;
@@ -40,12 +42,19 @@ public abstract class MessagingActivity extends AppCompatActivity implements Que
     private ChatAdapter adapter;
     private ArrayList<ChatMessage> chatHistory;
 
+    protected MessagingActivity(String appHandle) {
+        this.mAppHandle = appHandle;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messaging);
 
         initControls();
+
+        initApp();
+
     }
 
     private void initControls() {
@@ -53,7 +62,7 @@ public abstract class MessagingActivity extends AppCompatActivity implements Que
         messageET = (EditText) findViewById(R.id.messageEdit);
         sendBtn = (Button) findViewById(R.id.chatSendButton);
 
-        RelativeLayout container = (RelativeLayout) findViewById(R.id.container);
+        RelativeLayout container = (RelativeLayout) findViewById(R.id.messageContainer);
 
         chatHistory = new ArrayList<ChatMessage>();
         adapter = new ChatAdapter(MessagingActivity.this, new ArrayList<ChatMessage>());
@@ -77,9 +86,52 @@ public abstract class MessagingActivity extends AppCompatActivity implements Que
                 });
     }
 
+    private void initApp() {
+        getAndSetAppName(mAppHandle);
+        getAndSetWelcomeMessage(mAppHandle);
+    }
+
+    private void getAndSetAppName(String appHandle) {
+        Utils.request("App/" + appHandle + "/name", new QueryCompletionListener() {
+            @Override
+            public void responseReceived(JSONObject data) {
+                try {
+                    mAppName = data.getString("title");
+                    setTitle(mAppName);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void noResponseReceived() {
+                Log.d(TAG, "Unable to get app title.");
+            }
+        });
+    }
+
+    private void getAndSetWelcomeMessage(String appHandle) {
+        Utils.request("App/" + appHandle + "/welcome_message", new QueryCompletionListener() {
+            @Override
+            public void responseReceived(JSONObject data) {
+                try {
+                    mWelcomeMessage = data.getString("welcome_message");
+                    sendMessage(mWelcomeMessage, false);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+
+            @Override
+            public void noResponseReceived() {
+                Log.d(TAG, "Unable to get welcome message.");
+            }
+        });
+    }
+
     private ChatMessage createChatMessageObject(String message, boolean fromMe) {
         ChatMessage chatMessage = new ChatMessage();
-        chatMessage.setId(messageCount);
+        chatMessage.setId(adapter.getCount());
         chatMessage.setMessage(message);
         chatMessage.setDate(DateFormat.getDateTimeInstance().format(new Date()));
         chatMessage.setMe(fromMe);
@@ -91,13 +143,11 @@ public abstract class MessagingActivity extends AppCompatActivity implements Que
         adapter.add(message);
         adapter.notifyDataSetChanged();
         scroll();
-        messageCount++;
     }
 
-    protected void sendWelcomeMessage(String welcomeMessage) {
-        Log.d(TAG, welcomeMessage);
-        ChatMessage welcomeChatMessage = createChatMessageObject(welcomeMessage, false);
-        displayMessage(welcomeChatMessage);
+    protected void sendMessage(String message, boolean me) {
+        ChatMessage chatMessage = createChatMessageObject(message, me);
+        displayMessage(chatMessage);
     }
 
     private void scroll() {
@@ -120,9 +170,9 @@ public abstract class MessagingActivity extends AppCompatActivity implements Que
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            return true;
+            Intent intent = new Intent(this, HomescreenActivity.class);
+            this.startActivity(intent);
         }
-
         return super.onOptionsItemSelected(item);
     }
 
@@ -130,13 +180,12 @@ public abstract class MessagingActivity extends AppCompatActivity implements Que
     public void responseReceived(JSONObject data) {
         Log.d(TAG, data.toString());
         ChatMessage msg = new ChatMessage();
-        msg.setId(messageCount);
+        msg.setId(adapter.getCount());
         msg.setMe(false);
         msg.setMessage(data.toString());
         msg.setDate(DateFormat.getDateTimeInstance().format(new Date()));
         displayMessage(msg);
         chatHistory.add(msg);
-        messageCount++;
     }
 
     @Override
@@ -148,6 +197,5 @@ public abstract class MessagingActivity extends AppCompatActivity implements Que
         msg1.setMessage("No Response...");
         msg1.setDate(DateFormat.getDateTimeInstance().format(new Date()));
         displayMessage(msg1);
-        messageCount++;
     }
 }

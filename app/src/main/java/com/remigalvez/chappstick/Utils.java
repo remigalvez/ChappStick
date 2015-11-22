@@ -28,4 +28,13 @@ public class Utils {
         return url;
     }
 
+    public static void getUserApps(String userId, QueryServerAsyncTask.QueryCompletionListener completionListener) {
+        String url = "User/" + userId + "/apps";
+        request(url, completionListener);
+    }
+
+    public static void getApp(String appId, QueryServerAsyncTask.QueryCompletionListener completionListener) {
+        String url = "App/" + appId;
+        request(url, completionListener);
+    }
 }

@@ -1,4 +1,4 @@
-package com.remigalvez.chappstick.objects;
+package com.remigalvez.chappstick.adapter;
 
 import android.app.Activity;
 import android.content.Context;
@@ -12,23 +12,24 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.remigalvez.chappstick.R;
+import com.remigalvez.chappstick.objects.ChatMessage;
 
 import java.util.List;
 
 public class ChatAdapter extends BaseAdapter {
 
-    private final List<ChatMessage> chatMessages;
-    private Activity context;
+    private final List<ChatMessage> mChatMessages;
+    private Activity mContext;
 
     public ChatAdapter(Activity context, List<ChatMessage> chatMessages) {
-        this.context = context;
-        this.chatMessages = chatMessages;
+        this.mContext = context;
+        this.mChatMessages = chatMessages;
     }
 
     @Override
     public int getCount() {
-        if (chatMessages != null) {
-            return chatMessages.size();
+        if (mChatMessages != null) {
+            return mChatMessages.size();
         } else {
             return 0;
         }
@@ -36,8 +37,8 @@ public class ChatAdapter extends BaseAdapter {
 
     @Override
     public ChatMessage getItem(int position) {
-        if (chatMessages != null) {
-            return chatMessages.get(position);
+        if (mChatMessages != null) {
+            return mChatMessages.get(position);
         } else {
             return null;
         }
@@ -52,7 +53,7 @@ public class ChatAdapter extends BaseAdapter {
     public View getView(final int position, View convertView, ViewGroup parent) {
         ViewHolder holder;
         ChatMessage chatMessage = getItem(position);
-        LayoutInflater vi = (LayoutInflater) context.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+        LayoutInflater vi = (LayoutInflater) mContext.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
 
         if (convertView == null) {
             convertView = vi.inflate(R.layout.chat_bubble, null);
@@ -62,8 +63,7 @@ public class ChatAdapter extends BaseAdapter {
             holder = (ViewHolder) convertView.getTag();
         }
 
-        boolean myMsg = chatMessage.getIsme() ;//Just a dummy check
-        //to simulate whether it me or other sender
+        boolean myMsg = chatMessage.getIsme() ;
         setAlignment(holder, myMsg);
         holder.txtMessage.setText(chatMessage.getMessage());
         holder.txtInfo.setText(chatMessage.getDate());
@@ -72,11 +72,11 @@ public class ChatAdapter extends BaseAdapter {
     }
 
     public void add(ChatMessage message) {
-        chatMessages.add(message);
+        mChatMessages.add(message);
     }
 
     public void add(List<ChatMessage> messages) {
-        chatMessages.addAll(messages);
+        mChatMessages.addAll(messages);
     }
 
     private void setAlignment(ViewHolder holder, boolean isMe) {
@@ -126,7 +126,7 @@ public class ChatAdapter extends BaseAdapter {
     private ViewHolder createViewHolder(View v) {
         ViewHolder holder = new ViewHolder();
         holder.txtMessage = (TextView) v.findViewById(R.id.txtMessage);
-        holder.content = (LinearLayout) v.findViewById(R.id.content);
+        holder.content = (LinearLayout) v.findViewById(R.id.chat_bubble_content);
         holder.contentWithBG = (LinearLayout) v.findViewById(R.id.contentWithBackground);
         holder.txtInfo = (TextView) v.findViewById(R.id.txtInfo);
         return holder;

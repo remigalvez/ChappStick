@@ -7,22 +7,53 @@ import android.view.MenuItem;
 import android.widget.ListView;
 
 import com.remigalvez.chappstick.R;
+import com.remigalvez.chappstick.User;
+import com.remigalvez.chappstick.adapter.HomeIconAdapter;
+import com.remigalvez.chappstick.objects.App;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class HomescreenActivity extends AppCompatActivity {
+    private static final String TAG = "HomescreenActivity";
 
-    private ListView conversationListView;
+    User user;
 
-    private List<String> apps = new ArrayList<>();
+    private ListView appListView;
+
+    private HomeIconAdapter adapter;
+    private List<String> appsIdList;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_homescreen);
+        user = new User("hello");
+        mInitControls();
+    }
 
-        conversationListView = (ListView) findViewById(R.id.conversation_list_view);
+    private void mInitControls() {
+        appListView = (ListView) findViewById(R.id.appListView);
+
+        appsIdList = new ArrayList<>();
+        adapter = new HomeIconAdapter(HomescreenActivity.this, new ArrayList<App>());
+        appListView.setAdapter(adapter);
+
+        for (int i = 0; i < user.getApps().size(); i++) {
+
+        }
+    }
+
+    private App createApp(String appTitle) {
+        App app = new App();
+        app.setCount(adapter.getCount());
+        return null;
+    }
+
+    public void displayApp(App app) {
+        adapter.add(app);
+        adapter.notifyDataSetChanged();
+//        scroll();
     }
 
     @Override
