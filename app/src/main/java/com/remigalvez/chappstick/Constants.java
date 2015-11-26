@@ -6,6 +6,6 @@ package com.remigalvez.chappstick;
 public class Constants {
 
     public static final String HEROKU_SERVER_URL = "https://chappstick.herokuapp.com/";
-    public static String USER_ID = "yMqqXTXKsS";
+//    public static String USER_ID = "yMqqXTXKsS";
 
 }

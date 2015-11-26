@@ -1,6 +1,7 @@
 package com.remigalvez.chappstick.objects;
 
-import android.graphics.drawable.Drawable;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by Remi on 11/12/15.
@@ -10,7 +11,9 @@ public class App {
     private String mName;
     private String mAppImgUrl;
     private String mId;
+    private String mWelcomeMessage;
     private int count;
+    private String mObjectId;
 
     public String getName() {
         return mName;
@@ -20,7 +23,7 @@ public class App {
         return mAppImgUrl;
     }
 
-    public String setId(String id) {
+    public void setId(String id) {
         mId = id;
     }
 
@@ -29,7 +32,7 @@ public class App {
     }
 
     public void setAppImgUrl(String url) {
-
+        mAppImgUrl = url;
     }
 
     public int getCount() {
@@ -38,5 +41,30 @@ public class App {
 
     public void setCount(int count) {
         this.count = count;
+    }
+
+    public String getId() {
+        return mId;
+    }
+
+    public static App createFromJSON(JSONObject data) {
+        App app = new App();
+        try {
+            app.setId(data.getString("objectId"));
+            app.setName(data.getString("name"));
+            app.setWelcomeMessage(data.getString("welcome_message"));
+            app.setAppImgUrl(data.getJSONObject("icon").getString("url"));
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+        return app;
+    }
+
+    public String getWelcomeMessage() {
+        return mWelcomeMessage;
+    }
+
+    public void setWelcomeMessage(String welcomeMessage) {
+        mWelcomeMessage = welcomeMessage;
     }
 }

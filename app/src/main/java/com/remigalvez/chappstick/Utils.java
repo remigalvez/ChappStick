@@ -10,11 +10,6 @@ import com.remigalvez.chappstick.asynctask.QueryServerAsyncTask;
 public class Utils {
     private static final String TAG = "Utils";
 
-    /**
-     * Request service from server (ex: Uber)
-     * @param service
-     * @return JSON Object
-     */
     public static void request(String service,
                                QueryServerAsyncTask.QueryCompletionListener completionListener) {
         String url = parseQueryToUrl(service);

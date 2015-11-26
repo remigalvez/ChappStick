@@ -9,4 +9,12 @@
     <string name="message_placeholder">text message</string>
     <string name="send_btn">send</string>
     <string name="title_activity_conversation_list">ConversationListActivity</string>
+    <string name="add_item">Add item</string>
+    <string name="homescreen_activity">HomescreenActivity</string>
+    <string name="title_activity_login">LoginActivity</string>
+    <string name="username">E-mail</string>
+    <string name="password">Password</string>
+    <string name="login">Login</string>
+    <string name="title_activity_homescreen">HomescreenActivity</string>
+    <string name="title_activity_messaging">MessagingActivity</string>
 </resources>

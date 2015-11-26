@@ -1,5 +1,6 @@
 package com.remigalvez.chappstick;
 
+import com.remigalvez.chappstick.activity.HomescreenActivity;
 import com.remigalvez.chappstick.asynctask.QueryServerAsyncTask;
 import com.remigalvez.chappstick.objects.App;
 
@@ -14,22 +15,27 @@ import java.util.List;
  * Created by Remi on 11/21/15.
  */
 public class User {
+    public static final String TAG = "User";
+
+    public static User user;
 
     public List<App> apps;
     private String userId;
 
-    public User(String userId) {
+    private User(String userId) {
+        user = this;
         apps = new ArrayList<>();
-        getUserApps();
     }
 
     public void getUserApps() {
         // Get list of user app IDs
-        Utils.getUserApps(Constants.USER_ID, new QueryServerAsyncTask.QueryCompletionListener() {
+        Utils.getUserApps(, new QueryServerAsyncTask.QueryCompletionListener() {
             @Override
             public void responseReceived(JSONObject data) {
                 try {
+                    // Get list of app ids
                     JSONArray appNames = data.getJSONArray("apps");
+                    // For each app id, get app data and create App object
                     for (int i = 0; i < appNames.length(); i++) {
                         createAppObject(appNames.get(i).toString());
                     }
@@ -37,6 +43,7 @@ public class User {
                     e.printStackTrace();
                 }
             }
+
             @Override
             public void noResponseReceived() {
                 System.out.println("Uh oh...");
@@ -45,18 +52,17 @@ public class User {
     }
 
     private void createAppObject(String appId) {
+        // Get app data
         Utils.getApp(appId, new QueryServerAsyncTask.QueryCompletionListener() {
             @Override
             public void responseReceived(JSONObject data) {
-                App app = new App();
-                try {
-                    app.setId(data.getString("objectId"));
-                    app.setName(data.getString("name"));
-                    app.setAppImgUrl(data.getString("iconUrl"));
-                    apps.add(app);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                // Create App object with data
+                App app = App.createFromJSON(data);
+                // Add app to list of apps
+                apps.add(app);
+                // Add app to homescreen
+                HomescreenActivity hs = HomescreenActivity.getInstance();
+                hs.addItemToList(app);
             }
 
             @Override
@@ -68,6 +74,14 @@ public class User {
 
     public List<App> getApps() {
         return apps;
+    }
+
+    public static User getInstance() {
+        return user;
+    }
+
+    public static void instantiateUser(String userId) {
+        user = new User(userId);
     }
 
     public String getUserId() {

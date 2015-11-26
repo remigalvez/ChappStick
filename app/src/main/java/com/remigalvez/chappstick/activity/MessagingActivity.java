@@ -17,24 +17,23 @@ import com.remigalvez.chappstick.R;
 import com.remigalvez.chappstick.Utils;
 import com.remigalvez.chappstick.adapter.ChatAdapter;
 import com.remigalvez.chappstick.asynctask.QueryServerAsyncTask.QueryCompletionListener;
+import com.remigalvez.chappstick.objects.App;
 import com.remigalvez.chappstick.objects.ChatMessage;
 
-import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public abstract class MessagingActivity extends AppCompatActivity implements QueryCompletionListener {
+public class MessagingActivity extends AppCompatActivity implements QueryCompletionListener {
     private static final String TAG = "MessagingActivity";
 
-    protected String mAppHandle;
+    private App mApp;
+
+    protected String mAppId;
 
     QueryCompletionListener mResponseListener = this;
-
-    protected String mAppName;
-    protected String mWelcomeMessage;
 
     private EditText messageET;
     private ListView messagesContainer;
@@ -42,14 +41,17 @@ public abstract class MessagingActivity extends AppCompatActivity implements Que
     private ChatAdapter adapter;
     private ArrayList<ChatMessage> chatHistory;
 
-    protected MessagingActivity(String appHandle) {
-        this.mAppHandle = appHandle;
-    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messaging);
+
+        Bundle extras = getIntent().getExtras();
+        if (extras != null) {
+            this.mAppId = extras.getString("appId");
+        } else {
+            this.mAppId = "";
+        }
 
         initControls();
 
@@ -72,7 +74,6 @@ public abstract class MessagingActivity extends AppCompatActivity implements Que
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        Log.d(TAG, "Button pressed.");
                         String messageText = messageET.getText().toString();
                         Utils.request("", mResponseListener);
 //                Utils.request(messageText, mResponseListener);
@@ -87,44 +88,17 @@ public abstract class MessagingActivity extends AppCompatActivity implements Que
     }
 
     private void initApp() {
-        getAndSetAppName(mAppHandle);
-        getAndSetWelcomeMessage(mAppHandle);
-    }
-
-    private void getAndSetAppName(String appHandle) {
-        Utils.request("App/" + appHandle + "/name", new QueryCompletionListener() {
+        Utils.request("App/" + mAppId, new QueryCompletionListener() {
             @Override
             public void responseReceived(JSONObject data) {
-                try {
-                    mAppName = data.getString("title");
-                    setTitle(mAppName);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                mApp = App.createFromJSON(data);
+                setTitle(mApp.getName());
+                sendMessage(mApp.getWelcomeMessage(), false);
             }
 
             @Override
             public void noResponseReceived() {
-                Log.d(TAG, "Unable to get app title.");
-            }
-        });
-    }
-
-    private void getAndSetWelcomeMessage(String appHandle) {
-        Utils.request("App/" + appHandle + "/welcome_message", new QueryCompletionListener() {
-            @Override
-            public void responseReceived(JSONObject data) {
-                try {
-                    mWelcomeMessage = data.getString("welcome_message");
-                    sendMessage(mWelcomeMessage, false);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-            }
-
-            @Override
-            public void noResponseReceived() {
-                Log.d(TAG, "Unable to get welcome message.");
+                Log.d(TAG, "Couldn't get app");
             }
         });
     }
@@ -191,11 +165,11 @@ public abstract class MessagingActivity extends AppCompatActivity implements Que
     @Override
     public void noResponseReceived() {
         Log.d(TAG, "No Response...");
-        ChatMessage msg1 = new ChatMessage();
-        msg1.setId(4);
-        msg1.setMe(false);
-        msg1.setMessage("No Response...");
-        msg1.setDate(DateFormat.getDateTimeInstance().format(new Date()));
-        displayMessage(msg1);
+        ChatMessage msg = new ChatMessage();
+        msg.setId(adapter.getCount());
+        msg.setMe(false);
+        msg.setMessage("No Response...");
+        msg.setDate(DateFormat.getDateTimeInstance().format(new Date()));
+        displayMessage(msg);
     }
 }
