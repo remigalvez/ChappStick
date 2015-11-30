@@ -1,12 +1,9 @@
 package com.remigalvez.chappstick;
 
-import com.remigalvez.chappstick.activity.HomescreenActivity;
-import com.remigalvez.chappstick.asynctask.QueryServerAsyncTask;
-import com.remigalvez.chappstick.objects.App;
+import android.util.Log;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
+import com.remigalvez.chappstick.activity.HomescreenActivity;
+import com.remigalvez.chappstick.objects.App;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -17,78 +14,74 @@ import java.util.List;
 public class User {
     public static final String TAG = "User";
 
-    public static User user;
+    public static User USER;
 
-    public List<App> apps;
-    private String userId;
+    private List<App> mApps;
+    private String mUserId;
 
-    private User(String userId) {
-        user = this;
-        apps = new ArrayList<>();
+    public interface CompletionListener {
+        void responseReceived(User user);
+        void noResponseReceived();
     }
 
-    public void getUserApps() {
-        // Get list of user app IDs
-        Utils.getUserApps(, new QueryServerAsyncTask.QueryCompletionListener() {
+    public User(String username, String password) {
+        // Get user from Parse
+        ParseUtils.getUser(username, password, new User.CompletionListener() {
             @Override
-            public void responseReceived(JSONObject data) {
-                try {
-                    // Get list of app ids
-                    JSONArray appNames = data.getJSONArray("apps");
-                    // For each app id, get app data and create App object
-                    for (int i = 0; i < appNames.length(); i++) {
-                        createAppObject(appNames.get(i).toString());
-                    }
-                } catch (JSONException e) {
-                    e.printStackTrace();
+            public void responseReceived(User user) {
+                // Notify homescreen of new user
+                if (HomescreenActivity.getInstance() != null) {
+                    HomescreenActivity.getInstance().setUser(user);
                 }
             }
-
             @Override
             public void noResponseReceived() {
-                System.out.println("Uh oh...");
+                // TODO: Handle error
+                Log.d(TAG, "No User received...");
             }
         });
     }
 
-    private void createAppObject(String appId) {
-        // Get app data
-        Utils.getApp(appId, new QueryServerAsyncTask.QueryCompletionListener() {
-            @Override
-            public void responseReceived(JSONObject data) {
-                // Create App object with data
-                App app = App.createFromJSON(data);
-                // Add app to list of apps
-                apps.add(app);
-                // Add app to homescreen
-                HomescreenActivity hs = HomescreenActivity.getInstance();
-                hs.addItemToList(app);
-            }
+    public User() {
+        USER = this;
+        mApps = new ArrayList<>();
+    }
 
-            @Override
-            public void noResponseReceived() {
+    public void addApp(App app) {
+        mApps.add(app);
+        if (HomescreenActivity.getInstance() != null) {
+            HomescreenActivity hs = HomescreenActivity.getInstance();
+            hs.addItemToList(app);
+        }
+    }
 
+    public App getAppFromId(String appId) {
+        for (int i = 0; i < mApps.size(); i++) {
+            if (mApps.get(i).getId().equals(appId)) {
+                return mApps.get(i);
             }
-        });
+        }
+        return null;
     }
 
     public List<App> getApps() {
-        return apps;
+        return mApps;
+    }
+
+    public void setApps(List<App> apps) {
+        mApps = apps;
+    }
+
+    public String getId() {
+        return mUserId;
+    }
+
+    public void setId(String userId) {
+        this.mUserId = userId;
     }
 
     public static User getInstance() {
-        return user;
+        return USER;
     }
 
-    public static void instantiateUser(String userId) {
-        user = new User(userId);
-    }
-
-    public String getUserId() {
-        return userId;
-    }
-
-    public void setUserId(String userId) {
-        this.userId = userId;
-    }
 }

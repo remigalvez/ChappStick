@@ -1,19 +1,17 @@
 package com.remigalvez.chappstick.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.parse.LogInCallback;
-import com.parse.Parse;
-import com.parse.ParseException;
-import com.parse.ParseUser;
+import com.remigalvez.chappstick.ParseUtils;
 import com.remigalvez.chappstick.R;
+import com.remigalvez.chappstick.User;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
@@ -21,15 +19,14 @@ public class LoginActivity extends AppCompatActivity {
     private EditText mUsernameET;
     private EditText mPasswordET;
     private Button mLoginBtn;
+    private Button mSignUpBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Enable Local Datastore.
-        Parse.enableLocalDatastore(this);
-        Parse.initialize(this, "1A5G2YPnZmvYoDII7wkZYoMPk0NKm3JKUAiXPsD2", "jFusc2WaHUGIDscXCjsIWiJQ00yv9i62jzsyIwjq");
+        ParseUtils.initParse(this);
 
         initViews();
     }
@@ -37,34 +34,36 @@ public class LoginActivity extends AppCompatActivity {
     private void initViews() {
         mUsernameET = (EditText) findViewById(R.id.username);
         mPasswordET = (EditText) findViewById(R.id.password);
+        mSignUpBtn = (Button) findViewById(R.id.signUp);
+        mUsernameET.setText("remigalvez");
+        mPasswordET.setText("test");
         mLoginBtn = (Button) findViewById(R.id.login);
+        // Set click listener for login button
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, "Login button clicked");
-                Log.d(TAG, mUsernameET.getText().toString() + ":" + mPasswordET.getText().toString());
-                ParseUser.logInInBackground(mUsernameET.getText().toString(), mPasswordET.getText().toString(), new LogInCallback() {
-                    @Override
-                    public void done(ParseUser user, ParseException e) {
-                        Log.d(TAG, "Done!");
-                        if (user != null) {
-                            Log.d(TAG, "User found.");
-                            Log.d(TAG, user.getObjectId());
-                            Log.d(TAG, user.getUsername());
-//                            User.instantiateUser(user);
-                        } else {
-                            Log.d(TAG, "No user found...");
-                        }
-
-                        if (e != null) {
-                            e.printStackTrace();
-                        } else {
-                            Log.d(TAG, "No error!");
-                        }
-                    }
-                });
+                String username = mUsernameET.getText().toString();
+                String password = mPasswordET.getText().toString();
+                login(username, password);
             }
         });
+        // Set click listener for sign up button
+        mSignUpBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                signup();
+            }
+        });
+    }
+
+    private void login(String username, String password) {
+        new User(username, password);
+        Intent intent = new Intent(this, HomescreenActivity.class);
+        this.startActivity(intent);
+    }
+
+    private void signup() {
+
     }
 
     @Override

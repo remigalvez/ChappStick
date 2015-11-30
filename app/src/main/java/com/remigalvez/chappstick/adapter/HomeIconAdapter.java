@@ -2,7 +2,6 @@ package com.remigalvez.chappstick.adapter;
 
 import android.app.Activity;
 import android.content.Context;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -61,9 +60,10 @@ public class HomeIconAdapter extends BaseAdapter {
         } else {
             holder = (AppListViewHolder) v.getTag();
         }
+        // Set app name
         holder.appName.setText(mList.get(position).getName());
+        // Set app icon
         Ion.with(holder.appIcon).load(mList.get(position).getAppImgUrl());
-        Log.d(TAG, "Getting image for " + mList.get(position).getName());
         return v;
     }
 
