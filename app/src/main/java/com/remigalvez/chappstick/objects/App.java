@@ -15,6 +15,11 @@ public class App {
     private int count;
     private String mObjectId;
 
+    public interface CompletionListener {
+        void responseReceived(App app);
+        void noResponseReceived();
+    }
+
     public String getName() {
         return mName;
     }

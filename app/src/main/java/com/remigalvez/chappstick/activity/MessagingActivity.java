@@ -14,6 +14,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.remigalvez.chappstick.R;
+import com.remigalvez.chappstick.User;
 import com.remigalvez.chappstick.Utils;
 import com.remigalvez.chappstick.adapter.ChatAdapter;
 import com.remigalvez.chappstick.asynctask.QueryServerAsyncTask.QueryCompletionListener;
@@ -30,8 +31,7 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
     private static final String TAG = "MessagingActivity";
 
     private App mApp;
-
-    protected String mAppId;
+    private User mUser;
 
     QueryCompletionListener mResponseListener = this;
 
@@ -46,14 +46,17 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messaging);
 
+        mUser = User.getInstance();
+        initControls();
+        // Get extras
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            this.mAppId = extras.getString("appId");
+            String appId = extras.getString("appId");
+            mApp = mUser.getAppFromId(appId);
         } else {
-            this.mAppId = "";
+            // TODO: Handle error
+            Log.d(TAG, "No app specified in extras");
         }
-
-        initControls();
 
         initApp();
 
@@ -88,19 +91,8 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
     }
 
     private void initApp() {
-        Utils.request("App/" + mAppId, new QueryCompletionListener() {
-            @Override
-            public void responseReceived(JSONObject data) {
-                mApp = App.createFromJSON(data);
-                setTitle(mApp.getName());
-                sendMessage(mApp.getWelcomeMessage(), false);
-            }
-
-            @Override
-            public void noResponseReceived() {
-                Log.d(TAG, "Couldn't get app");
-            }
-        });
+        setTitle(mApp.getName());
+        sendMessage(mApp.getWelcomeMessage(), false);
     }
 
     private ChatMessage createChatMessageObject(String message, boolean fromMe) {

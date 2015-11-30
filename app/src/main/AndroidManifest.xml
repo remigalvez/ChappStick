@@ -28,6 +28,10 @@
             android:name=".activity.HomescreenActivity"
             android:label="@string/title_activity_homescreen" >
         </activity>
+        <activity
+            android:name=".activity.SignupActivity"
+            android:label="@string/title_activity_signup" >
+        </activity>
     </application>
 
 </manifest>

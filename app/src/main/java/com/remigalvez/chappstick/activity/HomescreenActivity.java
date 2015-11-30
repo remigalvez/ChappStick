@@ -18,7 +18,7 @@ import java.util.List;
 public class HomescreenActivity extends Activity implements AdapterView.OnItemClickListener {
     private static final String TAG = "HomescreenActivity";
 
-    private User user;
+    private User mUser;
     private static HomescreenActivity activity;
 
     private ListView mAppListView;
@@ -32,8 +32,6 @@ public class HomescreenActivity extends Activity implements AdapterView.OnItemCl
         setContentView(R.layout.activity_homescreen);
         activity = this;
 
-        user = User.getInstance();
-        user.getUserApps();
         initViews();
         // Assign variables
         mAppList = new ArrayList<>();
@@ -52,15 +50,19 @@ public class HomescreenActivity extends Activity implements AdapterView.OnItemCl
         mListAdapter.notifyDataSetChanged();
     }
 
-    public static HomescreenActivity getInstance() {
-        return activity;
-    }
-
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // Handle click on app item
         Intent intent = new Intent(this, MessagingActivity.class);
         intent.putExtra("appId", mAppList.get(position).getId());
         this.startActivity(intent);
+    }
+
+    public void setUser(User user) {
+        mUser = user;
+    }
+
+    public static HomescreenActivity getInstance() {
+        return activity;
     }
 }

@@ -10,6 +10,11 @@ import com.remigalvez.chappstick.asynctask.QueryServerAsyncTask;
 public class Utils {
     private static final String TAG = "Utils";
 
+    public interface Listener {
+        void responseReceived(Object object);
+        void noResponseReceived();
+    }
+
     public static void request(String service,
                                QueryServerAsyncTask.QueryCompletionListener completionListener) {
         String url = parseQueryToUrl(service);

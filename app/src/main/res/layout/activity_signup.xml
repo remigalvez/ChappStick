@@ -7,42 +7,38 @@
                 android:paddingTop="@dimen/activity_vertical_margin"
                 android:paddingBottom="@dimen/activity_vertical_margin"
                 android:orientation="vertical"
-                tools:context="com.remigalvez.chappstick.activity.LoginActivity"
-                android:gravity="center_horizontal"
-                android:background="#DDEEFF">
-
-    <ImageView
-        android:id="@+id/logo"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:paddingTop="60dp"
-        android:paddingBottom="60dp"
-        android:src="@drawable/logo4"/>
+                tools:context="com.remigalvez.chappstick.activity.SignupActivity">
 
     <EditText
-        android:id="@+id/username"
+        android:id="@+id/signupFirstName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/username" />
+        android:hint="@string/signupFirstName"/>
 
     <EditText
-        android:id="@+id/password"
+        android:id="@+id/signupLastName"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:hint="@string/password"
+        android:hint="@string/signupLastName"/>
+
+    <EditText
+        android:id="@+id/signupEmail"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:hint="@string/signupEmail"/>
+
+    <EditText
+        android:id="@+id/signupPassword"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:inputType="textPassword"
-        android:layout_marginBottom="15dp" />
+        android:hint="@string/signupPassword"/>
 
-    <Button
-        android:id="@+id/login"
+    <EditText
+        android:id="@+id/signupPasswordConfirmation"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:text="@string/login"/>
-
-    <Button
-        android:id="@+id/signUp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/signUp"/>
+        android:inputType="textPassword"
+        android:hint="@string/signupPasswordConfirmation"/>
 
 </LinearLayout>
