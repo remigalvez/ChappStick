@@ -1,9 +1,9 @@
-package com.remigalvez.chappstick;
+package com.remigalvez.chappstick.objects;
 
 import android.util.Log;
 
+import com.remigalvez.chappstick.ParseUtils;
 import com.remigalvez.chappstick.activity.HomescreenActivity;
-import com.remigalvez.chappstick.objects.App;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -15,6 +15,13 @@ public class User {
     public static final String TAG = "User";
 
     public static User USER;
+
+    // Used to sign user up
+    private String mFirstName;
+    private String mLastName;
+    private String mEmail;
+    private String mPassword;
+
 
     private List<App> mApps;
     private String mUserId;
@@ -34,6 +41,7 @@ public class User {
                     HomescreenActivity.getInstance().setUser(user);
                 }
             }
+
             @Override
             public void noResponseReceived() {
                 // TODO: Handle error
@@ -45,6 +53,14 @@ public class User {
     public User() {
         USER = this;
         mApps = new ArrayList<>();
+    }
+
+    // To sign user up
+    public User(String firstName, String lastName, String email, String password) {
+        mFirstName = firstName;
+        mLastName = lastName;
+        mEmail = email;
+        mPassword = password;
     }
 
     public void addApp(App app) {
@@ -74,6 +90,22 @@ public class User {
 
     public String getId() {
         return mUserId;
+    }
+
+    public String getFirstName() {
+        return mFirstName;
+    }
+
+    public String getLastName() {
+        return mLastName;
+    }
+
+    public String getEmail() {
+        return mEmail;
+    }
+
+    public String getPassword() {
+        return mPassword;
     }
 
     public void setId(String userId) {

@@ -11,7 +11,7 @@ import android.widget.EditText;
 
 import com.remigalvez.chappstick.ParseUtils;
 import com.remigalvez.chappstick.R;
-import com.remigalvez.chappstick.User;
+import com.remigalvez.chappstick.objects.User;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";

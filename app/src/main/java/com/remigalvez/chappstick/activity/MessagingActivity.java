@@ -14,7 +14,7 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 
 import com.remigalvez.chappstick.R;
-import com.remigalvez.chappstick.User;
+import com.remigalvez.chappstick.objects.User;
 import com.remigalvez.chappstick.Utils;
 import com.remigalvez.chappstick.adapter.ChatAdapter;
 import com.remigalvez.chappstick.asynctask.QueryServerAsyncTask.QueryCompletionListener;

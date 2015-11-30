@@ -10,7 +10,9 @@ import com.parse.ParseException;
 import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
+import com.parse.SignUpCallback;
 import com.remigalvez.chappstick.objects.App;
+import com.remigalvez.chappstick.objects.User;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -20,6 +22,12 @@ import org.json.JSONException;
  */
 public class ParseUtils {
     private static final String TAG = "ParseUtils";
+
+    // For empty responses
+    public interface CompletionListener {
+        public void responseReceived();
+        public void noResponseReceived();
+    }
 
 
     public static void getUser(String username, String password, final User.CompletionListener completionListener) {
@@ -46,6 +54,25 @@ public class ParseUtils {
                     completionListener.responseReceived(a);
                 } else {
                     // TODO: Handle error
+                    completionListener.noResponseReceived();
+                }
+            }
+        });
+    }
+
+    public static void signup(User user, final ParseUtils.CompletionListener completionListener) {
+        ParseUser parseUser = new ParseUser();
+        parseUser.setUsername(user.getEmail());
+        parseUser.setPassword(user.getPassword());
+        parseUser.setEmail(user.getEmail());
+        parseUser.put("firstName", user.getFirstName());
+        parseUser.put("lastName", user.getLastName());
+        parseUser.signUpInBackground(new SignUpCallback() {
+            @Override
+            public void done(ParseException e) {
+                if (e == null) {
+                    completionListener.responseReceived();
+                } else {
                     completionListener.noResponseReceived();
                 }
             }
@@ -104,4 +131,5 @@ public class ParseUtils {
         Parse.enableLocalDatastore(context);
         Parse.initialize(context, "1A5G2YPnZmvYoDII7wkZYoMPk0NKm3JKUAiXPsD2", "jFusc2WaHUGIDscXCjsIWiJQ00yv9i62jzsyIwjq");
     }
+
 }

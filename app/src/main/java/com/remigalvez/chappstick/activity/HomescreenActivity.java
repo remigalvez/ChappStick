@@ -8,7 +8,7 @@ import android.widget.AdapterView;
 import android.widget.ListView;
 
 import com.remigalvez.chappstick.R;
-import com.remigalvez.chappstick.User;
+import com.remigalvez.chappstick.objects.User;
 import com.remigalvez.chappstick.adapter.HomeIconAdapter;
 import com.remigalvez.chappstick.objects.App;
 
