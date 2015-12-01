@@ -9,7 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.remigalvez.chappstick.ParseUtils;
+import com.remigalvez.chappstick.parse.ParseUtils;
 import com.remigalvez.chappstick.R;
 import com.remigalvez.chappstick.objects.User;
 
@@ -51,7 +51,7 @@ public class LoginActivity extends AppCompatActivity {
         mSignUpBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                signup();
+                startSignupActivity();
             }
         });
     }
@@ -62,8 +62,9 @@ public class LoginActivity extends AppCompatActivity {
         this.startActivity(intent);
     }
 
-    private void signup() {
-
+    private void startSignupActivity() {
+        Intent intent = new Intent(this, SignupActivity.class);
+        this.startActivity(intent);
     }
 
     @Override

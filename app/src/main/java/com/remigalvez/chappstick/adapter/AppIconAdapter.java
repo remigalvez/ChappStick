@@ -18,14 +18,14 @@ import java.util.List;
 /**
  * Created by Remi on 11/12/15.
  */
-public class HomeIconAdapter extends BaseAdapter {
-    public static final String TAG = "HomeIconAdapter";
+public class AppIconAdapter extends BaseAdapter {
+    public static final String TAG = "AppIconAdapter";
 
     private Activity mContext;
     private List<App> mList;
     private LayoutInflater mLayoutInflater = null;
 
-    public HomeIconAdapter(Activity context, List<App> list) {
+    public AppIconAdapter(Activity context, List<App> list) {
         mContext = context;
         mList = list;
         mLayoutInflater = (LayoutInflater) mContext

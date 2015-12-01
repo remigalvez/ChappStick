@@ -25,4 +25,11 @@
     <string name="signupEmail">Email</string>
     <string name="signupPassword">Password</string>
     <string name="signupPasswordConfirmation">Confirm password</string>
+    <string name="title_activity_settings">SettingsActivity</string>
+    <string name="deleteApps">Delete apps</string>
+    <string name="title_activity_add_apps">AddAppsActivity</string>
+    <string name="title_activity_delete_apps">DeleteAppsActivity</string>
+    <string name="addApps">Add more apps!</string>
+    <string name="done">Done</string>
+    <string name="manageApps">Manage apps</string>
 </resources>

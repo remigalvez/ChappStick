@@ -2,7 +2,7 @@ package com.remigalvez.chappstick.objects;
 
 import android.util.Log;
 
-import com.remigalvez.chappstick.ParseUtils;
+import com.remigalvez.chappstick.parse.ParseUtils;
 import com.remigalvez.chappstick.activity.HomescreenActivity;
 
 import java.util.ArrayList;
@@ -63,11 +63,35 @@ public class User {
         mPassword = password;
     }
 
+    public void addAppList(List<App> apps) {
+        for (int i = 0; i < apps.size(); i++) {
+            addApp(apps.get(i));
+        }
+    }
+
+    public void removeFromAppList(List<App> apps) {
+        for (int i = 0; i < apps.size(); i++) {
+            removeApp(apps.get(i));
+        }
+    }
+
+    public void removeApp(App app) {
+        mApps.remove(app);
+        if (HomescreenActivity.isActive()) {
+            HomescreenActivity.getInstance().removeItemFromList(app);
+        } else {
+            // TODO: Handle activity not found
+            Log.d(TAG, "Homescreen activity does not exist...");
+        }
+    }
+
     public void addApp(App app) {
         mApps.add(app);
-        if (HomescreenActivity.getInstance() != null) {
-            HomescreenActivity hs = HomescreenActivity.getInstance();
-            hs.addItemToList(app);
+        if (HomescreenActivity.isActive()) {
+            HomescreenActivity.getInstance().addItemToList(app);
+        } else {
+            // TODO: Handle activity not found
+            Log.d(TAG, "Homescreen activity does not exist...");
         }
     }
 
@@ -96,16 +120,32 @@ public class User {
         return mFirstName;
     }
 
+    public void setFirstName(String firstName) {
+        mFirstName = firstName;
+    }
+
     public String getLastName() {
         return mLastName;
+    }
+
+    public void setLastName(String lastName) {
+        mLastName = lastName;
     }
 
     public String getEmail() {
         return mEmail;
     }
 
+    public void setEmail(String email) {
+        mEmail = email;
+    }
+
     public String getPassword() {
         return mPassword;
+    }
+
+    public void setPassword(String password) {
+        mPassword = password;
     }
 
     public void setId(String userId) {

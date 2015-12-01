@@ -1,12 +1,10 @@
 package com.remigalvez.chappstick.objects;
 
-import org.json.JSONException;
-import org.json.JSONObject;
-
 /**
  * Created by Remi on 11/12/15.
  */
 public class App {
+    public static final String TAG = "App";
 
     private String mName;
     private String mAppImgUrl;
@@ -52,24 +50,22 @@ public class App {
         return mId;
     }
 
-    public static App createFromJSON(JSONObject data) {
-        App app = new App();
-        try {
-            app.setId(data.getString("objectId"));
-            app.setName(data.getString("name"));
-            app.setWelcomeMessage(data.getString("welcome_message"));
-            app.setAppImgUrl(data.getJSONObject("icon").getString("url"));
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
-        return app;
-    }
-
     public String getWelcomeMessage() {
         return mWelcomeMessage;
     }
 
     public void setWelcomeMessage(String welcomeMessage) {
         mWelcomeMessage = welcomeMessage;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+        boolean isEqual = false;
+        if (object != null && object instanceof App) {
+            String thisId = this.getId();
+            String thatId = ((App) object).getId();
+            isEqual = thisId.equals(thatId);
+        }
+        return isEqual;
     }
 }

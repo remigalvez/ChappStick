@@ -30,7 +30,20 @@
         </activity>
         <activity
             android:name=".activity.SignupActivity"
-            android:label="@string/title_activity_signup" >
+            android:label="@string/title_activity_signup"
+            android:windowSoftInputMode="stateVisible|adjustResize" >
+        </activity>
+        <activity
+            android:name=".activity.SettingsActivity"
+            android:label="@string/title_activity_settings" >
+        </activity>
+        <activity
+            android:name=".activity.AddAppsActivity"
+            android:label="@string/title_activity_add_apps" >
+        </activity>
+        <activity
+            android:name=".activity.DeleteAppsActivity"
+            android:label="@string/title_activity_delete_apps" >
         </activity>
     </application>
 

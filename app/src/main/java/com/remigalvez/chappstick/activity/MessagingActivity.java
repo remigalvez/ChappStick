@@ -20,6 +20,7 @@ import com.remigalvez.chappstick.adapter.ChatAdapter;
 import com.remigalvez.chappstick.asynctask.QueryServerAsyncTask.QueryCompletionListener;
 import com.remigalvez.chappstick.objects.App;
 import com.remigalvez.chappstick.objects.ChatMessage;
+import com.remigalvez.chappstick.parse.ParseKey;
 
 import org.json.JSONObject;
 
@@ -41,6 +42,8 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
     private ChatAdapter adapter;
     private ArrayList<ChatMessage> chatHistory;
 
+    private String reqPrefix;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,6 +60,8 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
             // TODO: Handle error
             Log.d(TAG, "No app specified in extras");
         }
+
+        reqPrefix = ParseKey.APP + "/" + mApp.getId() + "/";
 
         initApp();
 
@@ -78,8 +83,7 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
                     @Override
                     public void onClick(View v) {
                         String messageText = messageET.getText().toString();
-                        Utils.request("", mResponseListener);
-//                Utils.request(messageText, mResponseListener);
+                        Utils.request(reqPrefix + messageText, mResponseListener);
                         if (TextUtils.isEmpty(messageText)) {
                             return;
                         }
@@ -92,6 +96,7 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
 
     private void initApp() {
         setTitle(mApp.getName());
+        sendMessage("Hi " + mUser.getFirstName() + ", welcome to " + mApp.getName(), false);
         sendMessage(mApp.getWelcomeMessage(), false);
     }
 

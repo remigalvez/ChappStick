@@ -1,5 +1,6 @@
 package com.remigalvez.chappstick.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
@@ -9,7 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.remigalvez.chappstick.ParseUtils;
+import com.remigalvez.chappstick.parse.ParseUtils;
 import com.remigalvez.chappstick.R;
 import com.remigalvez.chappstick.objects.User;
 
@@ -58,17 +59,25 @@ public class SignupActivity extends AppCompatActivity {
         });
     }
 
-    private void signup(User user) {
+    private void signup(final User user) {
         ParseUtils.signup(user, new ParseUtils.CompletionListener() {
             @Override
             public void responseReceived() {
-
+                login(user.getEmail(), user.getPassword());
             }
+
             @Override
             public void noResponseReceived() {
-
+                // TODO: Handle error
+                Log.d(TAG, "No response received...");
             }
         });
+    }
+
+    private void login(String username, String password) {
+        new User(username, password);
+        Intent intent = new Intent(this, HomescreenActivity.class);
+        this.startActivity(intent);
     }
 
     @Override
