@@ -114,7 +114,7 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
                     }
                 });
     }
-    
+
     private void initApp() {
         setTitle(mApp.getName());
         sendMessage("Hi " + mUser.getFirstName() + ", welcome to " + mApp.getName(), false);
@@ -175,7 +175,11 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
         msg.setId(adapter.getCount());
         msg.setMe(false);
         String message = "";
-        try { message = data.getString("message"); } catch (Exception e) { message = "Unable to parse JSONObject."; }
+        try { message = data.getString("message"); }
+        catch (Exception e) {
+            // TODO: Handle JSON exception
+            message = "Unable to parse JSONObject.";
+        }
         msg.setMessage(message);
         msg.setDate(DateFormat.getDateTimeInstance().format(new Date()));
         displayMessage(msg);
