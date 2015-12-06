@@ -5,6 +5,7 @@ package com.remigalvez.chappstick.parse;
  */
 public class ParseKey {
 
+    public static final String DEFAULT_APP_ID = "";
     public static final String APP_NAME = "name";
     public static final String APP = "App";
     public static final String USER_APPS = "apps";

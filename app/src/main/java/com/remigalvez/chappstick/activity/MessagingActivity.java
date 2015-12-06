@@ -21,6 +21,7 @@ import com.remigalvez.chappstick.asynctask.QueryServerAsyncTask.QueryCompletionL
 import com.remigalvez.chappstick.objects.App;
 import com.remigalvez.chappstick.objects.ChatMessage;
 import com.remigalvez.chappstick.parse.ParseKey;
+import com.remigalvez.chappstick.sensor.ShakeManager;
 
 import org.json.JSONObject;
 
@@ -28,13 +29,16 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-public class MessagingActivity extends AppCompatActivity implements QueryCompletionListener {
+import static com.remigalvez.chappstick.sensor.ShakeManager.*;
+
+public class MessagingActivity extends AppCompatActivity implements QueryCompletionListener, ShakeListener {
     private static final String TAG = "MessagingActivity";
 
     private App mApp;
     private User mUser;
 
-    QueryCompletionListener mResponseListener = this;
+    private QueryCompletionListener mResponseListener = this;
+    private ShakeManager mShakeManager;
 
     private EditText messageET;
     private ListView messagesContainer;
@@ -48,6 +52,9 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_messaging);
+
+        mShakeManager = new ShakeManager(this);
+        mShakeManager.setListener(this);
 
         mUser = User.getInstance();
         initControls();
@@ -67,6 +74,20 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
 
     }
 
+    @Override
+    protected void onResume(){
+        super.onResume();
+
+        mShakeManager.turnOn();
+    }
+
+    @Override
+    protected void onPause(){
+        super.onPause();
+
+        mShakeManager.turnOff();
+    }
+
     private void initControls() {
         messagesContainer = (ListView) findViewById(R.id.messagesContainer);
         messageET = (EditText) findViewById(R.id.messageEdit);
@@ -74,7 +95,7 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
 
         RelativeLayout container = (RelativeLayout) findViewById(R.id.messageContainer);
 
-        chatHistory = new ArrayList<ChatMessage>();
+        chatHistory = new ArrayList<>();
         adapter = new ChatAdapter(MessagingActivity.this, new ArrayList<ChatMessage>());
         messagesContainer.setAdapter(adapter);
 
@@ -153,7 +174,9 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
         ChatMessage msg = new ChatMessage();
         msg.setId(adapter.getCount());
         msg.setMe(false);
-        msg.setMessage(data.toString());
+        String message = "";
+        try { message = data.getString("message"); } catch (Exception e) { message = "Unable to parse JSONObject."; }
+        msg.setMessage(message);
         msg.setDate(DateFormat.getDateTimeInstance().format(new Date()));
         displayMessage(msg);
         chatHistory.add(msg);
@@ -168,5 +191,11 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
         msg.setMessage("No Response...");
         msg.setDate(DateFormat.getDateTimeInstance().format(new Date()));
         displayMessage(msg);
+    }
+
+    @Override
+    public void shakeDetected() {
+        adapter.clear();
+        Log.d(TAG, "Shake detected!");
     }
 }

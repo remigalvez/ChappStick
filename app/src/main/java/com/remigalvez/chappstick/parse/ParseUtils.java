@@ -12,6 +12,7 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
+import com.remigalvez.chappstick.Constants;
 import com.remigalvez.chappstick.activity.AddAppsActivity;
 import com.remigalvez.chappstick.objects.App;
 import com.remigalvez.chappstick.objects.User;
@@ -183,7 +184,7 @@ public class ParseUtils {
     public static void initParse(Context context) {
         // Enable Local Datastore.
         Parse.enableLocalDatastore(context);
-        Parse.initialize(context, "1A5G2YPnZmvYoDII7wkZYoMPk0NKm3JKUAiXPsD2", "jFusc2WaHUGIDscXCjsIWiJQ00yv9i62jzsyIwjq");
+        Parse.initialize(context, Constants.PARSE_APP_ID, Constants.PARSE_CLIENT_KEY);
     }
 
 }

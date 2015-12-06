@@ -75,6 +75,11 @@ public class ChatAdapter extends BaseAdapter {
         mChatMessages.add(message);
     }
 
+    public void clear() {
+        mChatMessages.clear();
+        notifyDataSetChanged();
+    }
+
     public void add(List<ChatMessage> messages) {
         mChatMessages.addAll(messages);
     }
