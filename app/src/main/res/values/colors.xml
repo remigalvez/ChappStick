@@ -2,4 +2,5 @@
 <resources>
     <color name="list_item_selected_color">#CCCCCC</color>
     <color name="list_item_default_color">#FFFFFF</color>
+    <color name="red">#FFAAAA</color>
 </resources>

@@ -1,18 +1,38 @@
 package com.remigalvez.chappstick.activity;
 
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
 
 import com.remigalvez.chappstick.R;
 
 public class SettingsActivity extends AppCompatActivity {
 
+    EditText firstName;
+    EditText lastName;
+    EditText ccNumber;
+    EditText ccExpMonth;
+    EditText ccExpYear;
+    Button saveBtn;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
+
+        initViews();
+    }
+
+    private void initViews() {
+        firstName = (EditText) findViewById(R.id.settingsFirstNameET);
+        lastName = (EditText) findViewById(R.id.settingsLastNameET);
+        ccNumber = (EditText) findViewById(R.id.ccNumberET);
+        ccExpMonth = (EditText) findViewById(R.id.ccExpMonthET);
+        ccExpYear = (EditText) findViewById(R.id.ccExpYearET);
+        saveBtn = (Button) findViewById(R.id.settingsSaveBtn);
     }
 
     @Override

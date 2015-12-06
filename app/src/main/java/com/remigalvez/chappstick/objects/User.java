@@ -153,6 +153,8 @@ public class User {
     }
 
     public static User getInstance() {
+        if (USER == null)
+            USER = new User();
         return USER;
     }
 

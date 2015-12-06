@@ -12,7 +12,7 @@ import android.util.Log;
  */
 public class ShakeManager implements SensorEventListener {
     private static final String TAG = "ShakeManager";
-    private static final int SHAKE_THRESHOLD = 800;
+    private static final int SHAKE_THRESHOLD = 500;
 
     private ShakeListener mShakeListener;
 
@@ -54,7 +54,7 @@ public class ShakeManager implements SensorEventListener {
     public void onSensorChanged(SensorEvent sensorEvent) {
         long curTime = System.currentTimeMillis();
         // only allow one update every 100ms.
-        if ((curTime - mLastAccelerometerUpdate) > 50) {
+        if ((curTime - mLastAccelerometerUpdate) > 100) {
             long diffTime = (curTime - mLastAccelerometerUpdate);
             mLastAccelerometerUpdate = curTime;
 

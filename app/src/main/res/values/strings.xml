@@ -32,4 +32,9 @@
     <string name="addApps">Add more apps!</string>
     <string name="done">Done</string>
     <string name="manageApps">Manage apps</string>
+    <string name="creditCardInfo">Credit Card Information:</string>
+    <string name="ccNumber">Credit card number:</string>
+    <string name="expDate">Expiration date:</string>
+    <string name="ccDisclaimer">* Your credit card information will not be stored on any of our servers nor databases, and you will be prompted for your security code for every transaction.</string>
+    <string name="save">Save</string>
 </resources>

@@ -114,7 +114,7 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
                     }
                 });
     }
-
+    
     private void initApp() {
         setTitle(mApp.getName());
         sendMessage("Hi " + mUser.getFirstName() + ", welcome to " + mApp.getName(), false);
