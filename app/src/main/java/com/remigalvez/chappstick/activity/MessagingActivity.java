@@ -178,7 +178,7 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
         try { message = data.getString("message"); }
         catch (Exception e) {
             // TODO: Handle JSON exception
-            message = "Unable to parse JSONObject.";
+            message = "Oops, it loos like " + mApp.getName() + " services are down!";
         }
         msg.setMessage(message);
         msg.setDate(DateFormat.getDateTimeInstance().format(new Date()));
