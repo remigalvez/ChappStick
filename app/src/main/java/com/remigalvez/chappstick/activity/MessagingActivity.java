@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -12,15 +13,16 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.RelativeLayout;
+import android.widget.Toast;
 
 import com.remigalvez.chappstick.R;
 import com.remigalvez.chappstick.objects.User;
-import com.remigalvez.chappstick.Utils;
+import com.remigalvez.chappstick.util.ServerUtils;
 import com.remigalvez.chappstick.adapter.ChatAdapter;
 import com.remigalvez.chappstick.asynctask.QueryServerAsyncTask.QueryCompletionListener;
 import com.remigalvez.chappstick.objects.App;
 import com.remigalvez.chappstick.objects.ChatMessage;
-import com.remigalvez.chappstick.parse.ParseKey;
+import com.remigalvez.chappstick.constant.ParseKey;
 import com.remigalvez.chappstick.sensor.ShakeManager;
 
 import org.json.JSONObject;
@@ -103,11 +105,12 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
                 new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        String messageText = messageET.getText().toString();
-                        Utils.request(reqPrefix + messageText, mResponseListener);
+                        String messageText = messageET.getText().toString().trim();
                         if (TextUtils.isEmpty(messageText)) {
+                            showToast(R.string.blankMessage);
                             return;
                         }
+                        ServerUtils.request(reqPrefix + messageText, mResponseListener);
                         messageET.setText("");
                         ChatMessage message = createChatMessageObject(messageText, true);
                         displayMessage(message);
@@ -115,9 +118,15 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
                 });
     }
 
+    private void showToast(int stringResourceId){
+        Toast toast = Toast.makeText(this,stringResourceId,Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
+
     private void initApp() {
         setTitle(mApp.getName());
-        sendMessage("Hi " + mUser.getFirstName() + ", welcome to " + mApp.getName(), false);
+        sendMessage("Hi " + mUser.getFirstName() + ", welcome to " + mApp.getName() + "!", false);
         sendMessage(mApp.getWelcomeMessage(), false);
     }
 
@@ -162,7 +171,7 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {
-            Intent intent = new Intent(this, HomescreenActivity.class);
+            Intent intent = new Intent(this, SettingsActivity.class);
             this.startActivity(intent);
         }
         return super.onOptionsItemSelected(item);

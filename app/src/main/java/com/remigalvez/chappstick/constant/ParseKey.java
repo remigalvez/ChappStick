@@ -1,4 +1,4 @@
-package com.remigalvez.chappstick.parse;
+package com.remigalvez.chappstick.constant;
 
 /**
  * Created by Remi on 11/30/15.

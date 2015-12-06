@@ -10,7 +10,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
-import com.remigalvez.chappstick.parse.ParseUtils;
+import com.remigalvez.chappstick.util.DatabaseUtils;
 import com.remigalvez.chappstick.R;
 import com.remigalvez.chappstick.objects.User;
 
@@ -60,7 +60,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void signup(final User user) {
-        ParseUtils.signup(user, new ParseUtils.CompletionListener() {
+        DatabaseUtils.signup(user, new DatabaseUtils.CompletionListener() {
             @Override
             public void responseReceived() {
                 login(user.getEmail(), user.getPassword());

@@ -1,4 +1,4 @@
-package com.remigalvez.chappstick.parse;
+package com.remigalvez.chappstick.util;
 
 import android.content.Context;
 import android.util.Log;
@@ -12,8 +12,9 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
-import com.remigalvez.chappstick.Constants;
+import com.remigalvez.chappstick.constant.Constants;
 import com.remigalvez.chappstick.activity.AddAppsActivity;
+import com.remigalvez.chappstick.constant.ParseKey;
 import com.remigalvez.chappstick.objects.App;
 import com.remigalvez.chappstick.objects.User;
 
@@ -26,14 +27,14 @@ import java.util.List;
 /**
  * Created by Remi on 11/26/15.
  */
-public class ParseUtils {
-    private static final String TAG = "ParseUtils";
+public class DatabaseUtils {
+    private static final String TAG = "DatabaseUtils";
     private static ParseUser sParseUser;
 
     // For empty responses
     public interface CompletionListener {
-        public void responseReceived();
-        public void noResponseReceived();
+        void responseReceived();
+        void noResponseReceived();
     }
 
     public static void appendAppsList(List<App> apps) {
@@ -42,6 +43,12 @@ public class ParseUtils {
             appIds.add(apps.get(i).getId());
         }
         sParseUser.addAll(ParseKey.USER_APPS, appIds);
+        sParseUser.saveInBackground();
+    }
+
+    public static void saveUserChanges(User user) {
+        sParseUser.put(ParseKey.FIRST_NAME, user.getFirstName());
+        sParseUser.put(ParseKey.LAST_NAME, user.getLastName());
         sParseUser.saveInBackground();
     }
 
@@ -60,7 +67,7 @@ public class ParseUtils {
             public void done(ParseUser user, ParseException e) {
                 if (e == null) {
                     sParseUser =  user;
-                    User u = parseUser(user);
+                    User u = parseUserToObject(user);
                     completionListener.responseReceived(u);
                 } else {
                     // TODO: Handle Parse exception
@@ -102,7 +109,7 @@ public class ParseUtils {
         });
     }
 
-    public static void signup(User user, final ParseUtils.CompletionListener completionListener) {
+    public static void signup(User user, final DatabaseUtils.CompletionListener completionListener) {
         ParseUser parseUser = new ParseUser();
         parseUser.setUsername(user.getEmail());
         parseUser.setPassword(user.getPassword());
@@ -123,7 +130,7 @@ public class ParseUtils {
     }
 
     // Parse ``ParseUser'' object to ``User'' object
-    public static User parseUser(ParseUser user) {
+    public static User parseUserToObject(ParseUser user) {
         User u = new User();
         u.setId(user.getObjectId());
         u.setFirstName(user.getString(ParseKey.FIRST_NAME));

@@ -14,7 +14,7 @@ import com.remigalvez.chappstick.R;
 import com.remigalvez.chappstick.adapter.AppIconAdapter;
 import com.remigalvez.chappstick.objects.App;
 import com.remigalvez.chappstick.objects.User;
-import com.remigalvez.chappstick.parse.ParseUtils;
+import com.remigalvez.chappstick.util.DatabaseUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -49,11 +49,12 @@ public class AddAppsActivity extends AppCompatActivity implements OnItemClickLis
         mUser = User.getInstance();
         mSelectedItems = new ArrayList<>();
 
-        ParseUtils.getAllApps(new CompletionListener() {
+        DatabaseUtils.getAllApps(new CompletionListener() {
             @Override
             public void responseReceived(List<App> apps) {
                 addItemListToList(apps);
             }
+
             @Override
             public void noResponseReceived() {
                 // TODO: Handle no error
@@ -78,7 +79,7 @@ public class AddAppsActivity extends AppCompatActivity implements OnItemClickLis
             @Override
             public void onClick(View v) {
                 mUser.addAppList(mSelectedItems);
-                ParseUtils.appendAppsList(mSelectedItems);
+                DatabaseUtils.appendAppsList(mSelectedItems);
                 addItemListToList(mSelectedItems);
                 finish();
             }

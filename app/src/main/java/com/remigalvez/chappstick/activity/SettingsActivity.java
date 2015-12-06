@@ -4,35 +4,59 @@ import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
 import com.remigalvez.chappstick.R;
+import com.remigalvez.chappstick.objects.User;
+import com.remigalvez.chappstick.util.DatabaseUtils;
 
 public class SettingsActivity extends AppCompatActivity {
 
-    EditText firstName;
-    EditText lastName;
-    EditText ccNumber;
-    EditText ccExpMonth;
-    EditText ccExpYear;
-    Button saveBtn;
+    private User mUser;
+
+    private EditText mFirstNameET;
+    private EditText mLastNameET;
+    private EditText mCcNumberET;
+    private EditText mCcExpMonthET;
+    private EditText mCcExpYearET;
+    private Button mSaveBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_settings);
 
+        mUser = User.getInstance();
+
         initViews();
+        setUserFields();
+
+    }
+
+    private void setUserFields() {
+        mFirstNameET.setText(mUser.getFirstName());
+        mLastNameET.setText(mUser.getLastName());
     }
 
     private void initViews() {
-        firstName = (EditText) findViewById(R.id.settingsFirstNameET);
-        lastName = (EditText) findViewById(R.id.settingsLastNameET);
-        ccNumber = (EditText) findViewById(R.id.ccNumberET);
-        ccExpMonth = (EditText) findViewById(R.id.ccExpMonthET);
-        ccExpYear = (EditText) findViewById(R.id.ccExpYearET);
-        saveBtn = (Button) findViewById(R.id.settingsSaveBtn);
+        mFirstNameET  = (EditText) findViewById(R.id.settingsFirstNameET);
+        mLastNameET = (EditText) findViewById(R.id.settingsLastNameET);
+        mCcNumberET = (EditText) findViewById(R.id.ccNumberET);
+        mCcExpMonthET = (EditText) findViewById(R.id.ccExpMonthET);
+        mCcExpYearET = (EditText) findViewById(R.id.ccExpYearET);
+        mSaveBtn = (Button) findViewById(R.id.settingsSaveBtn);
+        mSaveBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                // TODO: Save changes to Parse
+                mUser.setFirstName(mFirstNameET.getText().toString());
+                mUser.setLastName(mLastNameET.getText().toString());
+                DatabaseUtils.saveUserChanges(mUser);
+                finish();
+            }
+        });
     }
 
     @Override

@@ -2,7 +2,7 @@ package com.remigalvez.chappstick.objects;
 
 import android.util.Log;
 
-import com.remigalvez.chappstick.parse.ParseUtils;
+import com.remigalvez.chappstick.util.DatabaseUtils;
 import com.remigalvez.chappstick.activity.HomescreenActivity;
 
 import java.util.ArrayList;
@@ -33,7 +33,7 @@ public class User {
 
     public User(String username, String password) {
         // Get user from Parse
-        ParseUtils.getUser(username, password, new User.CompletionListener() {
+        DatabaseUtils.getUser(username, password, new User.CompletionListener() {
             @Override
             public void responseReceived(User user) {
                 // Notify homescreen of new user

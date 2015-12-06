@@ -1,14 +1,15 @@
-package com.remigalvez.chappstick;
+package com.remigalvez.chappstick.util;
 
 import android.util.Log;
 
+import com.remigalvez.chappstick.constant.Constants;
 import com.remigalvez.chappstick.asynctask.QueryServerAsyncTask;
 
 /**
  * Created by Remi on 11/10/15.
  */
-public class Utils {
-    private static final String TAG = "Utils";
+public class ServerUtils {
+    private static final String TAG = "ServerUtils";
 
     public static void request(String service,
                                QueryServerAsyncTask.QueryCompletionListener completionListener) {

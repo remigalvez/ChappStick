@@ -37,4 +37,5 @@
     <string name="expDate">Expiration date:</string>
     <string name="ccDisclaimer">* Your credit card information will not be stored on any of our servers nor databases, and you will be prompted for your security code for every transaction.</string>
     <string name="save">Save</string>
+    <string name="blankMessage">Empty message</string>
 </resources>

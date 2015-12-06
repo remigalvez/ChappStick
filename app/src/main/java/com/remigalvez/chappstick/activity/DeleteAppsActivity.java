@@ -11,7 +11,7 @@ import com.remigalvez.chappstick.R;
 import com.remigalvez.chappstick.adapter.AppIconAdapter;
 import com.remigalvez.chappstick.objects.App;
 import com.remigalvez.chappstick.objects.User;
-import com.remigalvez.chappstick.parse.ParseUtils;
+import com.remigalvez.chappstick.util.DatabaseUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -71,7 +71,7 @@ public class DeleteAppsActivity extends AppCompatActivity implements OnItemClick
 
     private void deleteApps(List<App> apps) {
         mUser.removeFromAppList(apps);
-        ParseUtils.removeAppsList(mSelectedItems);
+        DatabaseUtils.removeAppsList(mSelectedItems);
         removeItemListToList(apps);
     }
 
