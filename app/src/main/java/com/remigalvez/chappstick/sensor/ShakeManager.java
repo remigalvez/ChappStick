@@ -12,7 +12,7 @@ import android.util.Log;
  */
 public class ShakeManager implements SensorEventListener {
     private static final String TAG = "ShakeManager";
-    private static final int SHAKE_THRESHOLD = 500;
+    private static final int SHAKE_THRESHOLD = 1000;
 
     private ShakeListener mShakeListener;
 

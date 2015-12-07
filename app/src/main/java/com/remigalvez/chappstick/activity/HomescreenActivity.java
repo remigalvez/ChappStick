@@ -47,12 +47,11 @@ public class HomescreenActivity extends AppCompatActivity implements OnItemClick
         mAppList = new ArrayList<>();
         mListAdapter = new AppIconAdapter(this, mAppList);
 
-        if (savedInstanceState != null) {
-            String jsonUser = savedInstanceState.getString(Constants.USER);
-            mUser = User.fromJson(jsonUser);
-        }
+        mUser = User.getInstance();
+
         // Link adapter to list view
         mAppListView.setAdapter(mListAdapter);
+        refreshDisplay();
     }
 
     private void initViews() {
@@ -139,13 +138,6 @@ public class HomescreenActivity extends AppCompatActivity implements OnItemClick
         }
 
         return super.onOptionsItemSelected(item);
-    }
-
-    @Override
-    public void onSaveInstanceState(Bundle savedInstanceState) {
-        String jsonUser = User.toJson(mUser);
-        savedInstanceState.putString(Constants.USER, jsonUser);
-        super.onSaveInstanceState(savedInstanceState);
     }
 
     public void setUser(User user) {

@@ -12,12 +12,15 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
 
+import com.remigalvez.chappstick.PersistanceManager;
 import com.remigalvez.chappstick.util.DatabaseUtils;
 import com.remigalvez.chappstick.R;
 import com.remigalvez.chappstick.objects.User;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignupActivity";
+
+    private PersistanceManager mPersistanceManager;
 
     private EditText mFirstNameET;
     private EditText mLastNameET;
@@ -30,6 +33,8 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
+
+        mPersistanceManager = new PersistanceManager(this);
 
         initViews();
     }
@@ -61,7 +66,7 @@ public class SignupActivity extends AppCompatActivity {
                     User user = new User(firstName, lastName, email, password);
                     signup(user);
                 }
-
+                saveCredentials(email, password);
             }
         });
     }
@@ -85,6 +90,10 @@ public class SignupActivity extends AppCompatActivity {
                 Log.d(TAG, "No response received...");
             }
         });
+    }
+
+    private void saveCredentials(String username, String password) {
+        mPersistanceManager.saveCredentials(username, password);
     }
 
     private void login(String username, String password) {

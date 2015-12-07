@@ -1,6 +1,9 @@
 package com.remigalvez.chappstick.objects;
 
-public class ChatMessage {
+import android.os.Parcel;
+import android.os.Parcelable;
+
+public class ChatMessage implements Parcelable {
     private long id;
     private boolean isMe;
     private String message;
@@ -37,5 +40,19 @@ public class ChatMessage {
 
     public void setDate(String dateTime) {
         this.dateTime = dateTime;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeLong(id);
+        dest.writeValue(isMe);
+        dest.writeString(message);
+        dest.writeLong(userId != null ? userId : 0L);
+        dest.writeString(dateTime);
     }
 }

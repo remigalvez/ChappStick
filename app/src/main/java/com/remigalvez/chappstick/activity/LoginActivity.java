@@ -1,19 +1,25 @@
 package com.remigalvez.chappstick.activity;
 
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
+import android.view.Gravity;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.remigalvez.chappstick.PersistanceManager;
 import com.remigalvez.chappstick.R;
 import com.remigalvez.chappstick.objects.User;
+import com.remigalvez.chappstick.sensor.LocationFinder;
 import com.remigalvez.chappstick.util.DatabaseUtils;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
+
+    private static LoginActivity activity;
 
     private PersistanceManager mPersistanceManager;
 
@@ -26,6 +32,9 @@ public class LoginActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        activity = this;
+        new LocationFinder(this);
 
         DatabaseUtils.initParse(this);
         mPersistanceManager = new PersistanceManager(this);
@@ -67,13 +76,21 @@ public class LoginActivity extends AppCompatActivity {
 
     private void login(String username, String password) {
         new User(username, password);
-        Intent intent = new Intent(this, HomescreenActivity.class);
-        this.startActivity(intent);
     }
 
     private void startSignupActivity() {
         Intent intent = new Intent(this, SignupActivity.class);
         this.startActivity(intent);
+    }
+
+    public void showToast(int stringResourceId){
+        Toast toast = Toast.makeText(this,stringResourceId,Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
+    }
+
+    public static Context getInstance() {
+        return activity;
     }
 
 }

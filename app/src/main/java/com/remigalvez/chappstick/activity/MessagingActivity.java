@@ -1,7 +1,6 @@
 package com.remigalvez.chappstick.activity;
 
 import android.content.Intent;
-import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -37,7 +36,7 @@ import java.util.Date;
 
 import static com.remigalvez.chappstick.sensor.ShakeManager.ShakeListener;
 
-public class MessagingActivity extends AppCompatActivity implements QueryCompletionListener, ShakeListener, LocationFinder.LocationDetector {
+public class MessagingActivity extends AppCompatActivity implements QueryCompletionListener, ShakeListener {
     private static final String TAG = "MessagingActivity";
 
     private App mApp;
@@ -52,7 +51,6 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
     private ChatAdapter adapter;
     private ArrayList<ChatMessage> mChatHistory;
 
-    private Location mLocation;
     private String mReqPrefix;
 
     @Override
@@ -66,10 +64,6 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
         mUser = User.getInstance();
         initControls();
 
-        //kickoff location detection
-        LocationFinder locationFinder = new LocationFinder(this,this);
-        locationFinder.detectLocation();
-
         // Get extras
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -80,15 +74,15 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
             Log.d(TAG, "No app specified in extras");
         }
 
-        // TODO: Finish implementing saved instance state
-        if (savedInstanceState != null) {
-            String jsonChatHistory = savedInstanceState.getString(Constants.CHAT_HISTORY);
-            mChatHistory = parseChatHistoryFromJson(jsonChatHistory);
-        }
-
         mReqPrefix = ParseKey.APP + "/" + mApp.getId() + "/";
 
-        initApp();
+        if (savedInstanceState != null) {
+            ArrayList<ChatMessage> tempChatHistory = savedInstanceState.getParcelableArrayList(Constants.CHAT_HISTORY);
+            addMessagesList(tempChatHistory);
+            setTitle(mApp.getName());
+        } else {
+            initApp();
+        }
 
     }
 
@@ -114,6 +108,7 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
         RelativeLayout container = (RelativeLayout) findViewById(R.id.messageContainer);
 
         mChatHistory = new ArrayList<>();
+
         adapter = new ChatAdapter(MessagingActivity.this, mChatHistory);
         messagesContainer.setAdapter(adapter);
 
@@ -127,9 +122,10 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
                             return;
                         }
 
-                        //TODO fix hacky solution
-                        if (mApp.getId() == "cYW2QLamZ9" || mApp.getId() == "3GEwPrgLQr") {
-                            ServerUtils.request(mReqPrefix + mLocation.getLatitude() + "/" + mLocation.getLongitude() + "/" +  messageText + "/2", mResponseListener);
+                        //TODO fix hacky solution ``if'' statement
+                        if (mApp.getId().equals("cYW2QLamZ9") || mApp.getId().equals("3GEwPrgLQr")) {
+                            Log.d(TAG, "Sending: " + LocationFinder.getLocation().getLatitude() + " | " + LocationFinder.getLocation().getLongitude());
+                            ServerUtils.request(mReqPrefix + LocationFinder.getLocation().getLatitude() + "/" + LocationFinder.getLocation().getLongitude() + "/" + messageText, mResponseListener);
                         } else {
                             ServerUtils.request(mReqPrefix + messageText, mResponseListener);
                         }
@@ -162,6 +158,11 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
         return chatMessage;
     }
 
+    private void addMessagesList(ArrayList<ChatMessage> messages) {
+        for (ChatMessage m : messages) {
+            displayMessage(m);
+        }
+    }
 
     public void displayMessage(ChatMessage message) {
         mChatHistory.add(message);
@@ -232,7 +233,7 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
     @Override
     public void onSaveInstanceState(Bundle savedInstanceState) {
         // Save weather forecast data & user location
-        savedInstanceState.putString(Constants.CHAT_HISTORY, parseChatHistoryToJson());
+        savedInstanceState.putParcelableArrayList(Constants.CHAT_HISTORY, mChatHistory);
         super.onSaveInstanceState(savedInstanceState);
     }
 
@@ -251,7 +252,6 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
         msg.setMessage(message);
         msg.setDate(DateFormat.getDateTimeInstance().format(new Date()));
         displayMessage(msg);
-        mChatHistory.add(msg);
     }
 
     @Override
@@ -270,16 +270,5 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
         adapter.clear();
         sendMessage(mApp.getWelcomeMessage(), false);
         Log.d(TAG, "Shake detected!");
-    }
-
-    @Override
-    public void locationFound(Location location) {
-        Log.d(TAG,"location found");
-        mLocation = location;
-    }
-
-    @Override
-    public void locationNotFound(LocationFinder.FailureReason failureReason) {
-        Log.d(TAG,"location not found");
     }
 }
