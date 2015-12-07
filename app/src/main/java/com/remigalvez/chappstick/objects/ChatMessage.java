@@ -10,6 +10,8 @@ public class ChatMessage implements Parcelable {
     private Long userId;
     private String dateTime;
 
+    public ChatMessage() { }
+
     public long getId() {
         return id;
     }
