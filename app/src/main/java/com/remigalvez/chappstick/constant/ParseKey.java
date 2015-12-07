@@ -13,4 +13,6 @@ public class ParseKey {
     public static final String LAST_NAME = "lastName";
     public static final String WELCOME_MESSAGE = "welcome_message";
     public static final String ICON = "icon";
+    public static final String DEFAULT_APP_ID = "JNtC3znatj";
+
 }
