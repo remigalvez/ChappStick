@@ -21,6 +21,8 @@ public class LocationFinder implements LocationListener {
     private Context mContext;
     private LocationDetector mLocationDetector;
 
+    private static Location sLocation;
+
     private final int TIMEOUT_IN_MS = 10000; //10 second timeout
 
     private boolean mIsDetectingLocation = false;
@@ -41,6 +43,23 @@ public class LocationFinder implements LocationListener {
     public LocationFinder(Context context, LocationDetector locationDetector){
         mContext = context;
         mLocationDetector = locationDetector;
+    }
+
+    public LocationFinder(Context context) {
+        mContext = context;
+        mLocationDetector = new LocationDetector() {
+            @Override
+            public void locationFound(Location location) {
+                Log.d(TAG, "Location found!");
+                sLocation = location;
+            }
+
+            @Override
+            public void locationNotFound(FailureReason failureReason) {
+                Log.d(TAG, "Location not found..." + failureReason.toString());
+            }
+        };
+        this.detectLocation();
     }
 
     public void detectLocation(){
@@ -102,6 +121,10 @@ public class LocationFinder implements LocationListener {
         else{
             mLocationDetector.locationNotFound(FailureReason.TIMEOUT);
         }
+    }
+
+    public static Location getLocation() {
+        return sLocation;
     }
 
     @Override

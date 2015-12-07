@@ -1,9 +1,14 @@
 package com.remigalvez.chappstick.objects;
 
+import android.content.Intent;
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.util.Log;
 
 import com.google.gson.Gson;
+import com.remigalvez.chappstick.R;
 import com.remigalvez.chappstick.activity.HomescreenActivity;
+import com.remigalvez.chappstick.activity.LoginActivity;
 import com.remigalvez.chappstick.util.DatabaseUtils;
 
 import java.util.ArrayList;
@@ -12,7 +17,7 @@ import java.util.List;
 /**
  * Created by Remi on 11/21/15.
  */
-public class User {
+public class User implements Parcelable {
     public static final String TAG = "User";
 
     public static User USER;
@@ -37,6 +42,8 @@ public class User {
         DatabaseUtils.getUser(username, password, new User.CompletionListener() {
             @Override
             public void responseReceived(User user) {
+                Intent intent = new Intent(LoginActivity.getInstance(), HomescreenActivity.class);
+                LoginActivity.getInstance().startActivity(intent);
                 // Notify homescreen of new user
                 if (HomescreenActivity.getInstance() != null) {
                     HomescreenActivity.getInstance().setUser(user);
@@ -45,6 +52,9 @@ public class User {
 
             @Override
             public void noResponseReceived() {
+                // TODO: Fix hacky solution
+                LoginActivity loginActivity = (LoginActivity) LoginActivity.getInstance();
+                loginActivity.showToast(R.id.invalidLogin);
                 Log.d(TAG, "No User received...");
             }
         });
@@ -167,6 +177,22 @@ public class User {
         if (USER == null)
             USER = new User();
         return USER;
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeString(mFirstName);
+        dest.writeString(mLastName);
+        dest.writeString(mEmail);
+        dest.writeString(mPassword);
+
+        dest.writeList(mApps);
+        dest.writeString(mUserId);
     }
 
 }
