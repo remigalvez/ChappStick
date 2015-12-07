@@ -14,6 +14,7 @@ import android.widget.ListView;
 
 import com.remigalvez.chappstick.R;
 import com.remigalvez.chappstick.adapter.AppIconAdapter;
+import com.remigalvez.chappstick.constant.Constants;
 import com.remigalvez.chappstick.objects.App;
 import com.remigalvez.chappstick.objects.User;
 
@@ -45,6 +46,11 @@ public class HomescreenActivity extends AppCompatActivity implements OnItemClick
         // Assign variables
         mAppList = new ArrayList<>();
         mListAdapter = new AppIconAdapter(this, mAppList);
+
+        if (savedInstanceState != null) {
+            String jsonUser = savedInstanceState.getString(Constants.USER);
+            mUser = User.fromJson(jsonUser);
+        }
         // Link adapter to list view
         mAppListView.setAdapter(mListAdapter);
     }
@@ -80,7 +86,7 @@ public class HomescreenActivity extends AppCompatActivity implements OnItemClick
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // Handle click on app item
         Intent intent = new Intent(this, MessagingActivity.class);
-        intent.putExtra("appId", mAppList.get(position).getId());
+        intent.putExtra(Constants.APP_ID, mAppList.get(position).getId());
         this.startActivity(intent);
     }
 
@@ -133,6 +139,13 @@ public class HomescreenActivity extends AppCompatActivity implements OnItemClick
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        String jsonUser = User.toJson(mUser);
+        savedInstanceState.putString(Constants.USER, jsonUser);
+        super.onSaveInstanceState(savedInstanceState);
     }
 
     public void setUser(User user) {

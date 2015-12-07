@@ -14,4 +14,7 @@ public class Constants {
 
     public static final String USERNAME = "username";
     public static final String PASSWORD = "password";
+    public static final String USER = "user";
+    public static final String APP_ID = "appId";
+    public static final String CHAT_HISTORY = "chatHistory";
 }

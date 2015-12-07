@@ -15,9 +15,11 @@ import android.widget.ListView;
 import android.widget.RelativeLayout;
 import android.widget.Toast;
 
+import com.google.gson.Gson;
 import com.remigalvez.chappstick.R;
 import com.remigalvez.chappstick.adapter.ChatAdapter;
 import com.remigalvez.chappstick.asynctask.QueryServerAsyncTask.QueryCompletionListener;
+import com.remigalvez.chappstick.constant.Constants;
 import com.remigalvez.chappstick.constant.ParseKey;
 import com.remigalvez.chappstick.objects.App;
 import com.remigalvez.chappstick.objects.ChatMessage;
@@ -46,9 +48,9 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
     private ListView messagesContainer;
     private Button sendBtn;
     private ChatAdapter adapter;
-    private ArrayList<ChatMessage> chatHistory;
+    private ArrayList<ChatMessage> mChatHistory;
 
-    private String reqPrefix;
+    private String mReqPrefix;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -64,14 +66,20 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
         // Get extras
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
-            String appId = extras.getString("appId");
+            String appId = extras.getString(Constants.APP_ID);
             mApp = mUser.getAppFromId(appId);
         } else {
             // TODO: Handle error
             Log.d(TAG, "No app specified in extras");
         }
 
-        reqPrefix = ParseKey.APP + "/" + mApp.getId() + "/";
+        // TODO: Finish implementing saved instance state
+        if (savedInstanceState != null) {
+            String jsonChatHistory = savedInstanceState.getString(Constants.CHAT_HISTORY);
+            mChatHistory = parseChatHistoryFromJson(jsonChatHistory);
+        }
+
+        mReqPrefix = ParseKey.APP + "/" + mApp.getId() + "/";
 
         initApp();
 
@@ -98,8 +106,8 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
 
         RelativeLayout container = (RelativeLayout) findViewById(R.id.messageContainer);
 
-        chatHistory = new ArrayList<>();
-        adapter = new ChatAdapter(MessagingActivity.this, new ArrayList<ChatMessage>());
+        mChatHistory = new ArrayList<>();
+        adapter = new ChatAdapter(MessagingActivity.this, mChatHistory);
         messagesContainer.setAdapter(adapter);
 
         sendBtn.setOnClickListener(
@@ -111,7 +119,7 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
                             showToast(R.string.blankMessage);
                             return;
                         }
-                        ServerUtils.request(reqPrefix + messageText, mResponseListener);
+                        ServerUtils.request(mReqPrefix + messageText, mResponseListener);
                         messageET.setText("");
                         ChatMessage message = createChatMessageObject(messageText, true);
                         displayMessage(message);
@@ -142,7 +150,7 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
 
 
     public void displayMessage(ChatMessage message) {
-        adapter.add(message);
+        mChatHistory.add(message);
         adapter.notifyDataSetChanged();
         scroll();
     }
@@ -174,6 +182,15 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
         startActivity(shareIntent);
     }
 
+    public String parseChatHistoryToJson() {
+        Gson gson = new Gson();
+        return gson.toJson(mChatHistory);
+    }
+
+    public ArrayList<ChatMessage> parseChatHistoryFromJson(String jsonHistory) {
+        return new Gson().fromJson(jsonHistory, ArrayList.class);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -199,6 +216,13 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
     }
 
     @Override
+    public void onSaveInstanceState(Bundle savedInstanceState) {
+        // Save weather forecast data & user location
+        savedInstanceState.putString(Constants.CHAT_HISTORY, parseChatHistoryToJson());
+        super.onSaveInstanceState(savedInstanceState);
+    }
+
+    @Override
     public void responseReceived(JSONObject data) {
         Log.d(TAG, data.toString());
         ChatMessage msg = new ChatMessage();
@@ -213,7 +237,7 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
         msg.setMessage(message);
         msg.setDate(DateFormat.getDateTimeInstance().format(new Date()));
         displayMessage(msg);
-        chatHistory.add(msg);
+        mChatHistory.add(msg);
     }
 
     @Override
