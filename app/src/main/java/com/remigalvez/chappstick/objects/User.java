@@ -44,7 +44,6 @@ public class User {
 
             @Override
             public void noResponseReceived() {
-                // TODO: Handle error
                 Log.d(TAG, "No User received...");
             }
         });
@@ -80,7 +79,6 @@ public class User {
         if (HomescreenActivity.isActive()) {
             HomescreenActivity.getInstance().removeItemFromList(app);
         } else {
-            // TODO: Handle activity not found
             Log.d(TAG, "Homescreen activity does not exist...");
         }
     }
@@ -90,7 +88,6 @@ public class User {
         if (HomescreenActivity.isActive()) {
             HomescreenActivity.getInstance().addItemToList(app);
         } else {
-            // TODO: Handle activity not found
             Log.d(TAG, "Homescreen activity does not exist...");
         }
     }

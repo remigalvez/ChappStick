@@ -12,8 +12,8 @@ import com.parse.ParseObject;
 import com.parse.ParseQuery;
 import com.parse.ParseUser;
 import com.parse.SignUpCallback;
-import com.remigalvez.chappstick.constant.Constants;
 import com.remigalvez.chappstick.activity.AddAppsActivity;
+import com.remigalvez.chappstick.constant.Constants;
 import com.remigalvez.chappstick.constant.ParseKey;
 import com.remigalvez.chappstick.objects.App;
 import com.remigalvez.chappstick.objects.User;
@@ -34,6 +34,7 @@ public class DatabaseUtils {
     // For empty responses
     public interface CompletionListener {
         void responseReceived();
+
         void noResponseReceived();
     }
 
@@ -70,7 +71,6 @@ public class DatabaseUtils {
                     User u = parseUserToObject(user);
                     completionListener.responseReceived(u);
                 } else {
-                    // TODO: Handle Parse exception
                     completionListener.noResponseReceived();
                 }
             }
@@ -86,7 +86,6 @@ public class DatabaseUtils {
                     List<App> appsList = parseAppsList(apps);
                     completionListener.responseReceived(appsList);
                 } else {
-                    // TODO: Handle Parse exception
                     completionListener.noResponseReceived();
                     Log.d(TAG, "Error getting all apps...");
                 }
@@ -102,7 +101,6 @@ public class DatabaseUtils {
                     App a = parseApp(app);
                     completionListener.responseReceived(a);
                 } else {
-                    // TODO: Handle Parse exception
                     completionListener.noResponseReceived();
                 }
             }
@@ -160,13 +158,11 @@ public class DatabaseUtils {
                     }
                     @Override
                     public void noResponseReceived() {
-                        // TODO: Handle error
                         Log.d(TAG, "No response received");
                     }
                 });
             }
         } catch (JSONException e) {
-            // TODO: Handle exception
             e.printStackTrace();
         }
     }
