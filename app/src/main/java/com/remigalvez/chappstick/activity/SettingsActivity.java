@@ -8,6 +8,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.remigalvez.chappstick.PersistanceManager;
 import com.remigalvez.chappstick.R;
 import com.remigalvez.chappstick.objects.User;
 import com.remigalvez.chappstick.util.DatabaseUtils;
@@ -15,6 +16,8 @@ import com.remigalvez.chappstick.util.DatabaseUtils;
 public class SettingsActivity extends AppCompatActivity {
 
     private User mUser;
+
+    PersistanceManager mPersistanceManager;
 
     private EditText mFirstNameET;
     private EditText mLastNameET;
@@ -29,6 +32,7 @@ public class SettingsActivity extends AppCompatActivity {
         setContentView(R.layout.activity_settings);
 
         mUser = User.getInstance();
+        mPersistanceManager = new PersistanceManager(this);
 
         initViews();
         setUserFields();
@@ -50,13 +54,27 @@ public class SettingsActivity extends AppCompatActivity {
         mSaveBtn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                // TODO: Save changes to Parse
                 mUser.setFirstName(mFirstNameET.getText().toString());
                 mUser.setLastName(mLastNameET.getText().toString());
                 DatabaseUtils.saveUserChanges(mUser);
+                String ccNumber = mCcNumberET.getText().toString();
+                String ccMonth = mCcExpMonthET.getText().toString();
+                String ccYear = mCcExpYearET.getText().toString();
+                storeCcOnDevice(ccNumber, ccMonth, ccYear);
                 finish();
             }
         });
+        setCcInfo();
+    }
+
+    private void setCcInfo() {
+        mCcNumberET.setText(mPersistanceManager.loadCreditCardNumber());
+        mCcExpMonthET.setText(mPersistanceManager.loadCreditCardMonth());
+        mCcExpYearET.setText(mPersistanceManager.loadCreditCardYear());
+    }
+
+    private void storeCcOnDevice(String ccNumber, String ccMonth, String ccYear) {
+        mPersistanceManager.saveCreditCard(ccNumber, ccMonth, ccYear);
     }
 
     @Override

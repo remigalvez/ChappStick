@@ -17,13 +17,29 @@ public class PersistanceManager {
         mContext = context;
     }
 
-    public void saveUserCreditCard(String ccNumber, String ccMonth, String ccYear) {
+    public void saveCreditCard(String ccNumber, String ccMonth, String ccYear) {
         SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
         SharedPreferences.Editor editor = sharedPreferences.edit();
 
         editor.putString(Constants.CC_NUMBER_PREF_NAME, ccNumber);
         editor.putString(Constants.CC_MONTH_PREF_NAME, ccMonth);
         editor.putString(Constants.CC_YEAR_PREF_NAME, ccYear);
+        editor.apply();
+    }
+
+    public String loadCreditCardNumber() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        return sharedPreferences.getString(Constants.CC_NUMBER_PREF_NAME, "-");
+    }
+
+    public String loadCreditCardMonth() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        return sharedPreferences.getString(Constants.CC_MONTH_PREF_NAME, "-");
+    }
+
+    public String loadCreditCardYear() {
+        SharedPreferences sharedPreferences = PreferenceManager.getDefaultSharedPreferences(mContext);
+        return sharedPreferences.getString(Constants.CC_YEAR_PREF_NAME, "-");
     }
 
 
