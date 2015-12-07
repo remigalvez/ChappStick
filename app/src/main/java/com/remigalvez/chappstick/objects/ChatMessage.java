@@ -55,4 +55,22 @@ public class ChatMessage implements Parcelable {
         dest.writeLong(userId != null ? userId : 0L);
         dest.writeString(dateTime);
     }
+
+    protected ChatMessage(Parcel in) {
+        id = in.readLong();
+        message = in.readString();
+        dateTime = in.readString();
+    }
+
+    public static final Creator<ChatMessage> CREATOR = new Creator<ChatMessage>() {
+        @Override
+        public ChatMessage createFromParcel(Parcel in) {
+            return new ChatMessage(in);
+        }
+
+        @Override
+        public ChatMessage[] newArray(int size) {
+            return new ChatMessage[size];
+        }
+    };
 }

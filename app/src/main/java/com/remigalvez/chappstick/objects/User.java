@@ -1,11 +1,8 @@
 package com.remigalvez.chappstick.objects;
 
 import android.content.Intent;
-import android.os.Parcel;
-import android.os.Parcelable;
 import android.util.Log;
 
-import com.google.gson.Gson;
 import com.remigalvez.chappstick.R;
 import com.remigalvez.chappstick.activity.HomescreenActivity;
 import com.remigalvez.chappstick.activity.LoginActivity;
@@ -17,7 +14,7 @@ import java.util.List;
 /**
  * Created by Remi on 11/21/15.
  */
-public class User implements Parcelable {
+public class User {
     public static final String TAG = "User";
 
     public static User USER;
@@ -112,15 +109,6 @@ public class User implements Parcelable {
         return null;
     }
 
-    public static String toJson(User user) {
-        Gson gson = new Gson();
-        return gson.toJson(user);
-    }
-
-    public static User fromJson(String jsonUser) {
-        return new Gson().fromJson(jsonUser, User.class);
-    }
-
     public List<App> getApps() {
         return mApps;
     }
@@ -177,22 +165,6 @@ public class User implements Parcelable {
         if (USER == null)
             USER = new User();
         return USER;
-    }
-
-    @Override
-    public int describeContents() {
-        return 0;
-    }
-
-    @Override
-    public void writeToParcel(Parcel dest, int flags) {
-        dest.writeString(mFirstName);
-        dest.writeString(mLastName);
-        dest.writeString(mEmail);
-        dest.writeString(mPassword);
-
-        dest.writeList(mApps);
-        dest.writeString(mUserId);
     }
 
 }
