@@ -103,6 +103,7 @@ public class HomescreenActivity extends AppCompatActivity implements OnItemClick
         refreshDisplay();
     }
 
+    // Refresh the display + apps list
     private void refreshDisplay() {
         if (mUser != null) {
             mAppList.clear();

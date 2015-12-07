@@ -27,6 +27,7 @@ public class LoginActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
+        // Store info accross sessions
         DatabaseUtils.initParse(this);
         mPersistanceManager = new PersistanceManager(this);
         if (!mPersistanceManager.loadUsername().equals("")
@@ -65,6 +66,7 @@ public class LoginActivity extends AppCompatActivity {
         mPersistanceManager.saveCredentials(username, password);
     }
 
+    // Log in + Sign up logic
     private void login(String username, String password) {
         new User(username, password);
         Intent intent = new Intent(this, HomescreenActivity.class);

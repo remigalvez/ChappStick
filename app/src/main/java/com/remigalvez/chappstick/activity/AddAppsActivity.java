@@ -49,10 +49,10 @@ public class AddAppsActivity extends AppCompatActivity implements OnItemClickLis
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_add_apps);
         activity = this;
-        // TODO: Handle null pointer?
         mUser = User.getInstance();
         mSelectedItems = new ArrayList<>();
 
+        // Get apps that user has added
         DatabaseUtils.getAllApps(new CompletionListener() {
             @Override
             public void responseReceived(List<App> apps) {
@@ -74,6 +74,7 @@ public class AddAppsActivity extends AppCompatActivity implements OnItemClickLis
         mAppListView.setAdapter(mListAdapter);
     }
 
+    // Show message if error
     private void showToast(int stringResourceId){
         Toast toast = Toast.makeText(this,stringResourceId,Toast.LENGTH_SHORT);
         toast.setGravity(Gravity.CENTER, 0, 0);
@@ -102,18 +103,20 @@ public class AddAppsActivity extends AppCompatActivity implements OnItemClickLis
         });
     }
 
+    // Go to delete apps activity
     private void startDeleteAppsActivity() {
         Intent intent = new Intent(this, DeleteAppsActivity.class);
         this.startActivity(intent);
     }
 
+    // Add apps to list, from array list
     private void addItemListToList(List<App> apps) {
         for (int i = 0; i < apps.size(); i++) {
             addItemToList(apps.get(i));
         }
     }
 
-
+    // Actually add each app to the list
     public void addItemToList(App app) {
         if (!mUser.getApps().contains(app)) {
             mAppList.add(app);
@@ -124,7 +127,7 @@ public class AddAppsActivity extends AppCompatActivity implements OnItemClickLis
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // Handle click on app item
-//        mUser.addApp(mAppList.get(position));
+        //mUser.addApp(mAppList.get(position));
         App selectedApp = mAppList.get(position);
         if (!mSelectedItems.contains(selectedApp)) {
             mSelectedItems.add(selectedApp);

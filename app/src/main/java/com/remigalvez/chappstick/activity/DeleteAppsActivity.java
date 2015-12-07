@@ -35,17 +35,11 @@ public class DeleteAppsActivity extends AppCompatActivity implements OnItemClick
     private AppIconAdapter mListAdapter;
     private List<App> mSelectedItems;
 
-//    public interface CompletionListener {
-//        void responseReceived(List<App> apps);
-//        void noResponseReceived();
-//    }
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_delete_apps);
         activity = this;
-        // TODO: Handle null pointer?
         mUser = User.getInstance();
         mSelectedItems = new ArrayList<>();
 
@@ -72,6 +66,7 @@ public class DeleteAppsActivity extends AppCompatActivity implements OnItemClick
         });
     }
 
+    // Delete apps from array list
     private void deleteApps(List<App> apps) {
         mUser.removeFromAppList(apps);
         DatabaseUtils.removeAppsList(mSelectedItems);
@@ -106,7 +101,6 @@ public class DeleteAppsActivity extends AppCompatActivity implements OnItemClick
     @Override
     public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
         // Handle click on app item
-//        mUser.addApp(mAppList.get(position));
         App selectedApp = mAppList.get(position);
         if (!mSelectedItems.contains(selectedApp)) {
             mSelectedItems.add(selectedApp);
