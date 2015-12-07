@@ -186,9 +186,13 @@ public class DatabaseUtils {
     }
 
     public static void initParse(Context context) {
-        // Enable Local Datastore.
-        Parse.enableLocalDatastore(context);
-        Parse.initialize(context, Constants.PARSE_APP_ID, Constants.PARSE_CLIENT_KEY);
+        try {
+            // Enable Local Datastore.
+            Parse.enableLocalDatastore(context);
+            Parse.initialize(context, Constants.PARSE_APP_ID, Constants.PARSE_CLIENT_KEY);
+        } catch (Exception e) {
+            Log.d(TAG, "Parse already initialized.");
+        }
     }
 
 }

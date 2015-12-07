@@ -2,6 +2,7 @@ package com.remigalvez.chappstick.objects;
 
 import android.util.Log;
 
+import com.google.gson.Gson;
 import com.remigalvez.chappstick.activity.HomescreenActivity;
 import com.remigalvez.chappstick.util.DatabaseUtils;
 
@@ -99,6 +100,15 @@ public class User {
             }
         }
         return null;
+    }
+
+    public static String toJson(User user) {
+        Gson gson = new Gson();
+        return gson.toJson(user);
+    }
+
+    public static User fromJson(String jsonUser) {
+        return new Gson().fromJson(jsonUser, User.class);
     }
 
     public List<App> getApps() {
