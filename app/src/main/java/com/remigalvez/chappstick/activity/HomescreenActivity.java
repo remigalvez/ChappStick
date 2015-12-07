@@ -1,8 +1,8 @@
 package com.remigalvez.chappstick.activity;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
@@ -20,7 +20,7 @@ import com.remigalvez.chappstick.objects.User;
 import java.util.ArrayList;
 import java.util.List;
 
-public class HomescreenActivity extends Activity implements OnItemClickListener {
+public class HomescreenActivity extends AppCompatActivity implements OnItemClickListener {
     private static final String TAG = "HomescreenActivity";
 
     private static boolean ACTIVE;

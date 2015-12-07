@@ -35,6 +35,7 @@ public class SignupActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        getSupportActionBar().hide();
         mFirstNameET = (EditText) findViewById(R.id.signupFirstName);
         mLastNameET = (EditText) findViewById(R.id.signupLastName);
         mEmailET = (EditText) findViewById(R.id.signupEmail);

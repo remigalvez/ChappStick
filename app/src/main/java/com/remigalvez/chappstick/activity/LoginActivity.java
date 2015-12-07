@@ -7,12 +7,15 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 
+import com.remigalvez.chappstick.PersistanceManager;
 import com.remigalvez.chappstick.R;
 import com.remigalvez.chappstick.objects.User;
 import com.remigalvez.chappstick.util.DatabaseUtils;
 
 public class LoginActivity extends AppCompatActivity {
     private static final String TAG = "LoginActivity";
+
+    private PersistanceManager mPersistanceManager;
 
     private EditText mUsernameET;
     private EditText mPasswordET;
@@ -25,16 +28,19 @@ public class LoginActivity extends AppCompatActivity {
         setContentView(R.layout.activity_login);
 
         DatabaseUtils.initParse(this);
-
+        mPersistanceManager = new PersistanceManager(this);
+        if (!mPersistanceManager.loadUsername().equals("")
+                && !mPersistanceManager.loadPassword().equals("")) {
+            login(mPersistanceManager.loadUsername(), mPersistanceManager.loadPassword());
+        }
         initViews();
     }
 
     private void initViews() {
+        getSupportActionBar().hide();
         mUsernameET = (EditText) findViewById(R.id.username);
         mPasswordET = (EditText) findViewById(R.id.password);
         mSignUpBtn = (Button) findViewById(R.id.signUp);
-        mUsernameET.setText("remigalvez");
-        mPasswordET.setText("test");
         mLoginBtn = (Button) findViewById(R.id.login);
         // Set click listener for login button
         mLoginBtn.setOnClickListener(new View.OnClickListener() {
@@ -42,6 +48,7 @@ public class LoginActivity extends AppCompatActivity {
             public void onClick(View v) {
                 String username = mUsernameET.getText().toString();
                 String password = mPasswordET.getText().toString();
+                saveCredentials(username, password);
                 login(username, password);
             }
         });
@@ -52,6 +59,10 @@ public class LoginActivity extends AppCompatActivity {
                 startSignupActivity();
             }
         });
+    }
+
+    private void saveCredentials(String username, String password) {
+        mPersistanceManager.saveCredentials(username, password);
     }
 
     private void login(String username, String password) {

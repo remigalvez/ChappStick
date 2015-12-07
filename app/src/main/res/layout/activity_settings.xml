@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -6,90 +6,110 @@
                 android:orientation="vertical"
                 tools:context="com.remigalvez.chappstick.activity.SettingsActivity">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/signupFirstName"/>
-
-    <EditText
-        android:id="@+id/settingsFirstNameET"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/signupLastName"/>
-
-    <EditText
-        android:id="@+id/settingsLastNameET"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:textSize="25sp"
-        android:layout_marginTop="10dp"
-        android:text="@string/creditCardInfo"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/ccNumber"/>
-
-    <EditText
-        android:id="@+id/ccNumberET"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"/>
-
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="10dp"
-        android:text="@string/expDate"/>
-
     <LinearLayout
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-
-        <EditText
-            android:id="@+id/ccExpMonthET"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:minEms="2"
-            android:maxEms="2"/>
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20sp"
-            android:text="/"/>
+            android:layout_marginTop="10dp"
+            android:text="@string/signupFirstName"/>
 
         <EditText
-            android:id="@+id/ccExpYearET"
+            android:id="@+id/settingsFirstNameET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:minEms="2"
-            android:maxEms="2"/>
+            android:layout_marginTop="10dp"
+            android:text="@string/signupLastName"/>
+
+        <EditText
+            android:id="@+id/settingsLastNameET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textSize="25sp"
+            android:layout_marginTop="10dp"
+            android:text="@string/creditCardInfo"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/ccNumber"/>
+
+        <EditText
+            android:id="@+id/ccNumberET"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/ccNumberHint"
+            android:inputType="number"/>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="10dp"
+            android:text="@string/expDate"/>
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <EditText
+                android:id="@+id/ccExpMonthET"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/ccMonthHint"
+                android:inputType="number"
+                android:minEms="2"
+                android:maxEms="2"/>
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textSize="20sp"
+                android:text="/"/>
+
+            <EditText
+                android:id="@+id/ccExpYearET"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:hint="@string/ccYearHint"
+                android:inputType="number"
+                android:minEms="2"
+                android:maxEms="2"/>
+
+        </LinearLayout>
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:textColor="@color/red"
+            android:text="@string/ccDisclaimer"/>
+
+        <Button
+            android:id="@+id/settingsSaveBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/save"/>
+
+        <Button
+            android:id="@+id/settingsLogoutBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/red"
+            android:text="@string/logout"/>
 
     </LinearLayout>
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:textColor="@color/red"
-        android:text="@string/ccDisclaimer"/>
-
-    <Button
-        android:id="@+id/settingsSaveBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/save"/>
-
-</LinearLayout>
+</ScrollView>

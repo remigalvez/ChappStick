@@ -2,8 +2,8 @@ package com.remigalvez.chappstick.objects;
 
 import android.util.Log;
 
-import com.remigalvez.chappstick.util.DatabaseUtils;
 import com.remigalvez.chappstick.activity.HomescreenActivity;
+import com.remigalvez.chappstick.util.DatabaseUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -147,6 +147,10 @@ public class User {
 
     public void setId(String userId) {
         this.mUserId = userId;
+    }
+
+    public static void reset() {
+        USER = new User();
     }
 
     public static User getInstance() {

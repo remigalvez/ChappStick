@@ -12,4 +12,6 @@ public class Constants {
     public static final String CC_MONTH_PREF_NAME = "ccExpMonth";
     public static final String CC_YEAR_PREF_NAME = "ccExpYear";
 
+    public static final String USERNAME = "username";
+    public static final String PASSWORD = "password";
 }

@@ -115,7 +115,6 @@ public class DatabaseUtils {
         parseUser.put(ParseKey.FIRST_NAME, user.getFirstName());
         parseUser.put(ParseKey.LAST_NAME, user.getLastName());
         parseUser.put(ParseKey.USER_APPS, (new JSONArray()).put(ParseKey.DEFAULT_APP_ID));
-
         parseUser.signUpInBackground(new SignUpCallback() {
             @Override
             public void done(ParseException e) {
