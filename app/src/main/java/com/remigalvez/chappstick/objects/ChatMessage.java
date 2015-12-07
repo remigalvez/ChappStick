@@ -25,9 +25,7 @@ public class ChatMessage {
     public void setMessage(String message) {
         this.message = message;
     }
-    public long getUserId() {
-        return userId;
-    }
+    public long getUserId() { return userId; }
 
     public void setUserId(long userId) {
         this.userId = userId;

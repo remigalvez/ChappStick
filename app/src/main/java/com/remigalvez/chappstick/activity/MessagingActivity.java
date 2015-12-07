@@ -1,6 +1,7 @@
 package com.remigalvez.chappstick.activity;
 
 import android.content.Intent;
+import android.location.Location;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.text.TextUtils;
@@ -22,6 +23,7 @@ import com.remigalvez.chappstick.constant.ParseKey;
 import com.remigalvez.chappstick.objects.App;
 import com.remigalvez.chappstick.objects.ChatMessage;
 import com.remigalvez.chappstick.objects.User;
+import com.remigalvez.chappstick.sensor.LocationFinder;
 import com.remigalvez.chappstick.sensor.ShakeManager;
 import com.remigalvez.chappstick.util.ServerUtils;
 
@@ -33,7 +35,7 @@ import java.util.Date;
 
 import static com.remigalvez.chappstick.sensor.ShakeManager.ShakeListener;
 
-public class MessagingActivity extends AppCompatActivity implements QueryCompletionListener, ShakeListener {
+public class MessagingActivity extends AppCompatActivity implements QueryCompletionListener, ShakeListener, LocationFinder.LocationDetector {
     private static final String TAG = "MessagingActivity";
 
     private App mApp;
@@ -49,6 +51,8 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
     private ArrayList<ChatMessage> chatHistory;
 
     private String reqPrefix;
+    private Location mLocation;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,10 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
 
         mUser = User.getInstance();
         initControls();
+
+        //kickoff location detection
+        LocationFinder locationFinder = new LocationFinder(this,this);
+        locationFinder.detectLocation();
 
         // Get extras
         Bundle extras = getIntent().getExtras();
@@ -111,7 +119,14 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
                             showToast(R.string.blankMessage);
                             return;
                         }
-                        ServerUtils.request(reqPrefix + messageText, mResponseListener);
+
+                        //TODO fix hacky solution
+                        if (mApp.getId() == "cYW2QLamZ9" || mApp.getId() == "3GEwPrgLQr") {
+                            ServerUtils.request(reqPrefix + messageText + "/" + mLocation.getLatitude() + "/" + mLocation.getLongitude() + "/", mResponseListener);
+                        } else {
+                            ServerUtils.request(reqPrefix + messageText, mResponseListener);
+                        }
+
                         messageET.setText("");
                         ChatMessage message = createChatMessageObject(messageText, true);
                         displayMessage(message);
@@ -232,5 +247,15 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
         adapter.clear();
         sendMessage(mApp.getWelcomeMessage(), false);
         Log.d(TAG, "Shake detected!");
+    }
+
+    @Override
+    public void locationFound(Location location) {
+
+    }
+
+    @Override
+    public void locationNotFound(LocationFinder.FailureReason failureReason) {
+
     }
 }
