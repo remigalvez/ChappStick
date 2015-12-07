@@ -1,5 +1,6 @@
 package com.remigalvez.chappstick.activity;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
@@ -25,6 +26,7 @@ public class SettingsActivity extends AppCompatActivity {
     private EditText mCcExpMonthET;
     private EditText mCcExpYearET;
     private Button mSaveBtn;
+    private Button mLogoutBtn;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -45,6 +47,7 @@ public class SettingsActivity extends AppCompatActivity {
     }
 
     private void initViews() {
+        getSupportActionBar().hide();
         mFirstNameET  = (EditText) findViewById(R.id.settingsFirstNameET);
         mLastNameET = (EditText) findViewById(R.id.settingsLastNameET);
         mCcNumberET = (EditText) findViewById(R.id.ccNumberET);
@@ -64,7 +67,26 @@ public class SettingsActivity extends AppCompatActivity {
                 finish();
             }
         });
+        mLogoutBtn = (Button) findViewById(R.id.settingsLogoutBtn);
+        mLogoutBtn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                logout();
+            }
+        });
         setCcInfo();
+    }
+
+    private void logout() {
+        User.reset();
+        mPersistanceManager.clear();
+        startLoginActivity();
+    }
+
+    private void startLoginActivity() {
+        Intent openMainActivity= new Intent(SettingsActivity.this, LoginActivity.class);
+        openMainActivity.setFlags(Intent.FLAG_ACTIVITY_REORDER_TO_FRONT);
+        startActivity(openMainActivity);
     }
 
     private void setCcInfo() {

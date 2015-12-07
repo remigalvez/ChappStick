@@ -16,14 +16,14 @@ import android.widget.RelativeLayout;
 import android.widget.Toast;
 
 import com.remigalvez.chappstick.R;
-import com.remigalvez.chappstick.objects.User;
-import com.remigalvez.chappstick.util.ServerUtils;
 import com.remigalvez.chappstick.adapter.ChatAdapter;
 import com.remigalvez.chappstick.asynctask.QueryServerAsyncTask.QueryCompletionListener;
+import com.remigalvez.chappstick.constant.ParseKey;
 import com.remigalvez.chappstick.objects.App;
 import com.remigalvez.chappstick.objects.ChatMessage;
-import com.remigalvez.chappstick.constant.ParseKey;
+import com.remigalvez.chappstick.objects.User;
 import com.remigalvez.chappstick.sensor.ShakeManager;
+import com.remigalvez.chappstick.util.ServerUtils;
 
 import org.json.JSONObject;
 
@@ -31,7 +31,7 @@ import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 
-import static com.remigalvez.chappstick.sensor.ShakeManager.*;
+import static com.remigalvez.chappstick.sensor.ShakeManager.ShakeListener;
 
 public class MessagingActivity extends AppCompatActivity implements QueryCompletionListener, ShakeListener {
     private static final String TAG = "MessagingActivity";
@@ -156,6 +156,24 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
         messagesContainer.setSelection(messagesContainer.getCount() - 1);
     }
 
+    private void shareLastMessage() {
+        if (adapter.getCount() < 1) {
+            showToast(R.string.noMessages);
+            return;
+        }
+
+        Intent shareIntent = new Intent();
+        shareIntent.setAction(Intent.ACTION_SEND);
+
+        String lastMessage = adapter.getItem(adapter.getCount()-1).getMessage();
+        shareIntent.putExtra(Intent.EXTRA_TEXT, "ChappStick - Shared by " + mUser.getFirstName() +
+                " " + mUser.getLastName() + "\n\n" + lastMessage);
+
+        shareIntent.setType("text/plain");
+
+        startActivity(shareIntent);
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
@@ -174,6 +192,8 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
         if (id == R.id.action_settings) {
             Intent intent = new Intent(this, SettingsActivity.class);
             this.startActivity(intent);
+        } else if (id == R.id.action_share) {
+            shareLastMessage();
         }
         return super.onOptionsItemSelected(item);
     }

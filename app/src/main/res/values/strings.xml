@@ -42,4 +42,10 @@
     <string name="emailError">Email address is invalid</string>
     <string name="noResponse">Please check your internet and try again.</string>
     <string name="JSONException">There was an error connecting to the service, please try again.</string>
+    <string name="noMessages">No message to share!</string>
+    <string name="action_share">Share</string>
+    <string name="logout">Log out</string>
+    <string name="ccNumberHint">XXXX-XXXX-XXXX-XXXX</string>
+    <string name="ccMonthHint">MM</string>
+    <string name="ccYearHint">YY</string>
 </resources>
