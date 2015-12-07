@@ -129,11 +129,11 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
 
                         //TODO fix hacky solution
                         if (mApp.getId() == "cYW2QLamZ9" || mApp.getId() == "3GEwPrgLQr") {
-                            ServerUtils.request(mReqPrefix + messageText + "/" + mLocation.getLatitude() + "/" + mLocation.getLongitude() + "/", mResponseListener);
+                            ServerUtils.request(mReqPrefix + mLocation.getLatitude() + "/" + mLocation.getLongitude() + "/" +  messageText + "/2", mResponseListener);
                         } else {
                             ServerUtils.request(mReqPrefix + messageText, mResponseListener);
                         }
-                        
+
                         messageET.setText("");
                         ChatMessage message = createChatMessageObject(messageText, true);
                         displayMessage(message);
@@ -274,11 +274,12 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
 
     @Override
     public void locationFound(Location location) {
-
+        Log.d(TAG,"location found");
+        mLocation = location;
     }
 
     @Override
     public void locationNotFound(LocationFinder.FailureReason failureReason) {
-
+        Log.d(TAG,"location not found");
     }
 }
