@@ -1,4 +1,4 @@
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
                 xmlns:tools="http://schemas.android.com/tools"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -10,49 +10,56 @@
                 android:gravity="center_horizontal"
                 tools:context="com.remigalvez.chappstick.activity.SignupActivity">
 
-    <ImageView
+    <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="20dp"
-        android:layout_marginBottom="20dp"
-        android:src="@drawable/logo4"/>
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-    <EditText
-        android:id="@+id/signupFirstName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/signupFirstName"/>
+        <ImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="20dp"
+            android:layout_marginBottom="20dp"
+            android:src="@drawable/logo4"/>
 
-    <EditText
-        android:id="@+id/signupLastName"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/signupLastName"/>
+        <EditText
+            android:id="@+id/signupFirstName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/signupFirstName"/>
 
-    <EditText
-        android:id="@+id/signupEmail"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:hint="@string/signupEmail"/>
+        <EditText
+            android:id="@+id/signupLastName"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/signupLastName"/>
 
-    <EditText
-        android:id="@+id/signupPassword"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="@string/signupPassword"/>
+        <EditText
+            android:id="@+id/signupEmail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:hint="@string/signupEmail"/>
 
-    <EditText
-        android:id="@+id/signupPasswordConfirmation"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:inputType="textPassword"
-        android:hint="@string/signupPasswordConfirmation"/>
+        <EditText
+            android:id="@+id/signupPassword"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="@string/signupPassword"/>
 
-    <Button
-        android:id="@+id/enterSignUpBtn"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:text="@string/signUp"/>
+        <EditText
+            android:id="@+id/signupPasswordConfirmation"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:inputType="textPassword"
+            android:hint="@string/signupPasswordConfirmation"/>
 
-</LinearLayout>
+        <Button
+            android:id="@+id/enterSignUpBtn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/signUp"/>
+
+    </LinearLayout>
+
+</ScrollView>

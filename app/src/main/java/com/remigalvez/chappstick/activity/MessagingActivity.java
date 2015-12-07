@@ -230,6 +230,7 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
     @Override
     public void shakeDetected() {
         adapter.clear();
+        sendMessage(mApp.getWelcomeMessage(), false);
         Log.d(TAG, "Shake detected!");
     }
 }
