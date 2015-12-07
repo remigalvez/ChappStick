@@ -38,4 +38,8 @@
     <string name="ccDisclaimer">* Your credit card information will not be stored on any of our servers nor databases, and you will be prompted for your security code for every transaction.</string>
     <string name="save">Save</string>
     <string name="blankMessage">Empty message</string>
+    <string name="passwordError">Passwords do not match</string>
+    <string name="emailError">Email address is invalid</string>
+    <string name="noResponse">Please check your internet and try again.</string>
+    <string name="JSONException">There was an error connecting to the service, please try again.</string>
 </resources>

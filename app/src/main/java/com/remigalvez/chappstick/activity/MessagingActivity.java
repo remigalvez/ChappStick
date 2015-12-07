@@ -60,6 +60,7 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
 
         mUser = User.getInstance();
         initControls();
+
         // Get extras
         Bundle extras = getIntent().getExtras();
         if (extras != null) {
@@ -186,7 +187,7 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
         String message = "";
         try { message = data.getString("message"); }
         catch (Exception e) {
-            // TODO: Handle JSON exception
+            showToast(R.string.JSONException);
             message = "Oops, it loos like " + mApp.getName() + " services are down!";
         }
         msg.setMessage(message);

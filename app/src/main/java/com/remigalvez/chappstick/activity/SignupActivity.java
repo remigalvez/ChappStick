@@ -4,11 +4,13 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.remigalvez.chappstick.util.DatabaseUtils;
 import com.remigalvez.chappstick.R;
@@ -48,15 +50,25 @@ public class SignupActivity extends AppCompatActivity {
                 String password = mPasswordET.getText().toString();
                 String passwordConfirm = mPassWordConfirmET.getText().toString();
 
-                if (password.equals(passwordConfirm)) {
+                if (!password.equals(passwordConfirm)) {
+                    showToast(R.string.passwordError);
+                    Log.d(TAG, "Passwords do not match!");
+                } else if (!email.contains("@") || !email.contains(".")) {
+                    showToast(R.string.emailError);
+                    Log.d(TAG, "Email incorrect!");
+                } else {
                     User user = new User(firstName, lastName, email, password);
                     signup(user);
-                } else {
-                    // TODO: Handle error
-                    Log.d(TAG, "Passwords do not match!");
                 }
+
             }
         });
+    }
+
+    private void showToast(int stringResourceId){
+        Toast toast = Toast.makeText(this,stringResourceId,Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
     private void signup(final User user) {
@@ -68,7 +80,7 @@ public class SignupActivity extends AppCompatActivity {
 
             @Override
             public void noResponseReceived() {
-                // TODO: Handle error
+                showToast(R.string.noResponse);
                 Log.d(TAG, "No response received...");
             }
         });

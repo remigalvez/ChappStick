@@ -4,6 +4,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +12,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.Toast;
 
 import com.remigalvez.chappstick.R;
 import com.remigalvez.chappstick.adapter.AppIconAdapter;
@@ -59,8 +61,8 @@ public class AddAppsActivity extends AppCompatActivity implements OnItemClickLis
 
             @Override
             public void noResponseReceived() {
-                // TODO: Handle no error
                 Log.d(TAG, "No response received...");
+                showToast(R.string.noResponse);
             }
         });
 
@@ -70,6 +72,12 @@ public class AddAppsActivity extends AppCompatActivity implements OnItemClickLis
         mListAdapter = new AppIconAdapter(this, mAppList);
         // Link adapter to list view
         mAppListView.setAdapter(mListAdapter);
+    }
+
+    private void showToast(int stringResourceId){
+        Toast toast = Toast.makeText(this,stringResourceId,Toast.LENGTH_SHORT);
+        toast.setGravity(Gravity.CENTER, 0, 0);
+        toast.show();
     }
 
     private void initViews() {

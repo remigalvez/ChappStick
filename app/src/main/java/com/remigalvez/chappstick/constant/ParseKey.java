@@ -5,7 +5,7 @@ package com.remigalvez.chappstick.constant;
  */
 public class ParseKey {
 
-    public static final String DEFAULT_APP_ID = "";
+    public static final String DEFAULT_APP_ID = "JNtC3znatj";
     public static final String APP_NAME = "name";
     public static final String APP = "App";
     public static final String USER_APPS = "apps";
@@ -13,6 +13,5 @@ public class ParseKey {
     public static final String LAST_NAME = "lastName";
     public static final String WELCOME_MESSAGE = "welcome_message";
     public static final String ICON = "icon";
-    public static final String DEFAULT_APP_ID = "JNtC3znatj";
 
 }
