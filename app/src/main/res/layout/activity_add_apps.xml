@@ -12,6 +12,7 @@
         android:id="@+id/addAppsDeleteBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/blue"
         android:text="@string/deleteApps" />
 
     <ListView
@@ -28,6 +29,7 @@
         android:id="@+id/addAppsDoneBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/blue"
         android:text="@string/done"
         android:layout_alignParentBottom="true"/>
 

@@ -1,4 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="invalidLogin" type="id">Invalid login!</item>
+    <item name="noLocation" type="id">It looks like we couldn\'t find your location! Try again</item>
 </resources>

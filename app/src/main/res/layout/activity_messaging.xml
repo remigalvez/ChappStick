@@ -9,6 +9,22 @@
             android:layout_height="match_parent"
             android:orientation="vertical">
 
+
+            <ListView
+            android:id="@+id/messagesContainer"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_alignParentLeft="false"
+            android:layout_alignParentTop="false"
+            android:paddingLeft="20dp"
+            android:paddingRight="20dp"
+            android:paddingBottom="2dp"
+            android:layout_above="@+id/messageEdit"
+            android:listSelector="@android:color/transparent"
+            android:transcriptMode="alwaysScroll"
+            android:scrollbars="none"
+            android:divider="@null" />
+
             <EditText
                 android:id="@+id/messageEdit"
                 android:layout_width="match_parent"
@@ -23,22 +39,9 @@
                 android:layout_height="wrap_content"
                 android:layout_alignParentBottom="true"
                 android:layout_alignParentRight="true"
-                android:background="@color/background_floating_material_dark"
+                android:background="@color/chatBlue"
                 android:text="@string/send_btn"
                 android:textColor="@color/background_material_light"/>
 
-            <ListView
-                android:id="@+id/messagesContainer"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:layout_alignParentLeft="false"
-                android:layout_alignParentTop="false"
-                android:padding="20dp"
-                android:layout_above="@+id/messageEdit"
-                android:listSelector="@android:color/transparent"
-                android:transcriptMode="alwaysScroll"
-                android:scrollbars="none"
-                android:divider="@null" />
-
         </RelativeLayout>
-    </LinearLayout>
+</LinearLayout>

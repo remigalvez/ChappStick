@@ -101,6 +101,7 @@
             android:id="@+id/settingsSaveBtn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:background="@color/blue"
             android:text="@string/save"/>
 
         <Button

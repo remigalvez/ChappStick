@@ -48,4 +48,5 @@
     <string name="ccNumberHint">XXXX-XXXX-XXXX-XXXX</string>
     <string name="ccMonthHint">MM</string>
     <string name="ccYearHint">YY</string>
+    <string name="noLocation">Your location can\'t be found...</string>
 </resources>

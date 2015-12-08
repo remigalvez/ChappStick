@@ -21,6 +21,7 @@
         android:id="@+id/userAddAppsBtn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:background="@color/blue"
         android:text="@string/manageApps"
         android:layout_alignParentBottom="true"/>
 

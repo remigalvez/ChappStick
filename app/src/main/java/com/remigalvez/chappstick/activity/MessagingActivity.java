@@ -124,8 +124,12 @@ public class MessagingActivity extends AppCompatActivity implements QueryComplet
 
                         //TODO fix hacky solution ``if'' statement
                         if (mApp.getId().equals("cYW2QLamZ9") || mApp.getId().equals("3GEwPrgLQr")) {
-                            Log.d(TAG, "Sending: " + LocationFinder.getLocation().getLatitude() + " | " + LocationFinder.getLocation().getLongitude());
-                            ServerUtils.request(mReqPrefix + LocationFinder.getLocation().getLatitude() + "/" + LocationFinder.getLocation().getLongitude() + "/" + messageText, mResponseListener);
+                            try {
+                                ServerUtils.request(mReqPrefix + LocationFinder.getLocation().getLatitude() + "/" + LocationFinder.getLocation().getLongitude() + "/" + messageText, mResponseListener);
+//                                ServerUtils.request(mReqPrefix + "38.900140/-77.049447/" + messageText, mResponseListener);
+                            } catch (Exception e) {
+                                showToast(R.id.noLocation);
+                            }
                         } else {
                             ServerUtils.request(mReqPrefix + messageText, mResponseListener);
                         }
